@@ -1,4 +1,4 @@
-TARGET := CodixPlay
+TARGET := Dictionary
 
 SRC := src
 BUILD := build
