@@ -9,8 +9,8 @@
 
 class Application {
 public:
-    static constexpr float WINDOW_WIDTH = 1440;
-    static constexpr float WINDOW_HEIGHT = 950;
+    static constexpr float WINDOW_WIDTH = 1024;
+    static constexpr float WINDOW_HEIGHT = 640;
     static constexpr char *WINDOW_TITLE = "Dictionary";
 
     static constexpr int FPS = 60;
