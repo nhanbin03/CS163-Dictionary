@@ -37,6 +37,3 @@ include
 .vscode
 build
 lib
-
-# Makefile
-Makefile
