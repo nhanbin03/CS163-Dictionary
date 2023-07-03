@@ -20,7 +20,7 @@ endif
 
 $(BUILD)/%.o: $(SRC)/%.cpp
 	mkdir -p $(dir $@)
-	g++ -w -Iinclude -c -o $@ $<
+	g++ -w -std=c++14 -Iinclude -c -o $@ $<
 
 .PHONY: clean
 clean:
