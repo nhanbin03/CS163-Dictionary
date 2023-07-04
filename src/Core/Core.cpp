@@ -44,5 +44,5 @@ void removeFavorite(Word *word)
 }
 bool isFavorite(Word *word)
 {
-    return;
+    return word->IsFavorite;
 }
