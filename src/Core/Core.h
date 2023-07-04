@@ -37,6 +37,7 @@ public:
     void saveToFile();
     void addFavorite(Word *word);
     void removeFavorite(Word *word);
+    bool isFavorite(Word *word);
 
 private:
     std::string mDataDirectory;
