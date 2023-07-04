@@ -18,7 +18,8 @@ Core::Core(const std::string& directory)
 
 Core::~Core() {
 }
-void addFavorite(Word *word)
+
+void Core::addFavorite(Word *word)
 {
     if(word->IsFavorite==false)
     {
@@ -26,11 +27,11 @@ void addFavorite(Word *word)
     }
     else
     {
-        cout<<"already added"<<endl;
+        std::cout<<"already added"<<std::endl;
         return ;
     }
 }
-void removeFavorite(Word *word)
+void Core::removeFavorite(Word *word)
 {
     if(word->IsFavorite==true)
     {
@@ -38,11 +39,11 @@ void removeFavorite(Word *word)
     }
     else
     {
-        cout<<"this word is not favorite word yet"<<endl;
+        std::cout<<"this word is not favorite word yet"<<std::endl;
         return ;
     }
 }
-bool isFavorite(Word *word)
+bool Core::isFavorite(Word *word)
 {
     return word->IsFavorite;
 }
