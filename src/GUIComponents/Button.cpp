@@ -1,6 +1,6 @@
 #include "Button.h"
 
-#include "../Helper.h"
+#include "GUIComponentHelper.h"
 
 #include <iostream>
 
