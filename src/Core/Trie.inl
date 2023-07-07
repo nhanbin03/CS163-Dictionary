@@ -99,7 +99,7 @@ std::vector<Data*> Trie<Data>::getPrefixMatches(const std::string& keyword) {
 }
 
 template <class Data>
-void Trie<Data>::getResults(Node* cur, std::vector<Record>& results) {
+void Trie<Data>::getResults(Node* cur, std::vector<Data*>& results) {
 	if (cur == nullptr) {
 		return;
 	}
