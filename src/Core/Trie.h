@@ -17,6 +17,7 @@ public:
     class Node {
         Data data;
         std::vector<Node*> child;
+        bool isEmpty{true};
         Node(Data data, int numChild);
         ~Node();
     };

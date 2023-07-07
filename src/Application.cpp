@@ -58,5 +58,7 @@ void Application::loadTextures() {
 
 void Application::loadFonts() {
     std::string BASE_PATH = "asset/font/";
-    // FontHolder::getInstance().load(FontID::Inter, BASE_PATH + "Inter.ttf");
+    FontHolder::getInstance().load(FontID::Inter, BASE_PATH + "Inter.ttf");
+    FontHolder::getInstance().load(FontID::Inter_Bold,
+                                   BASE_PATH + "Inter_Bold.ttf");
 }
