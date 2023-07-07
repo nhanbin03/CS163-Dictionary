@@ -28,12 +28,12 @@ Trie<Data>::StatusID Trie<Data>::insert(const Data& newData) {
     std:: string word = newData.str;
     Node* cur = mRoot;
     if (cur == nullptr){
-        cur = new Node(newData(), mNumChild);
+        cur = new Node(Data(), mNumChild);
     }
     for (int i = 0; i < word.size(); i++){
         int index = mMapping[word[i]];
         if (cur->child[index] == nullptr){
-            cur->child[index] = new Node(newData(), mNumChild);
+            cur->child[index] = new Node(Data(), mNumChild);
         }
         cur = cur->child[index];
     }
