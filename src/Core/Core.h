@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
+#include <fstream>
 class Core {
 public:
     struct Word;
