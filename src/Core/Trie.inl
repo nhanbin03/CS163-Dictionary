@@ -47,5 +47,20 @@ Trie<Data>::StatusID Trie<Data>::insert(const Data& newData) {
 
 template <class Data>
 Trie<Data>::StatusID Trie<Data>::remove(const std::string& keyword) {
-    return StatusID();
+    Node* cur = mRoot;
+    if (cur == nullptr){
+        return StatusID::NOT_FOUND;
+    }
+    for (int i = 0; i < keyword.size(); i++){
+        int index = mMapping[keyword[i]];
+        if (cur->child[index] == nullptr){
+            return StatusID::NOT_FOUND;
+        }
+        cur = cur->child[index];
+    }
+    if (cur->isEmpty == true){
+        return StatusID::NOT_FOUND;
+    }
+    cur->isEmpty = true;
+    return StatusID::SUCCESS;
 }
