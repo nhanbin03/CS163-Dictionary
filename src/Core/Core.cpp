@@ -55,7 +55,7 @@ void Core::saveToFile()
     if (outputFile.is_open()) {
         for (Word* word : mWordCollection) {
             for (Definition* def : word->defs) {
-                outputFile << word->str << "    " << def->str << std::endl;
+                outputFile << word->str << "\t" << def->str << std::endl;
             }
         }
         outputFile.close();
