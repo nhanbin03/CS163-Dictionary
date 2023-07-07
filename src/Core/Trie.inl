@@ -32,3 +32,49 @@ template <class Data>
 Trie<Data>::StatusID Trie<Data>::remove(const std::string& keyword) {
     return StatusID();
 }
+
+template <class Data>
+Trie<Data>::StatusID Trie<Data>::getData(const std::string& keyword, Data& returnedData, Node*& returnedNode) {
+
+    Node* cur = mRoot;
+    if (cur == nullptr) 
+        return StatusID::NOT_FOUND;
+
+    for (int i = 0; i < keyword.size(); i++){
+        int index = mMapping[keyword[i]];
+        if (cur->child[index] == nullptr) 
+            return StatusID::NOT_FOUND;
+        cur = cur->child[index];
+    }
+
+    if (cur->isEmpty == true) 
+        return StatusID::NOT_FOUND;
+    
+    returnedData = cur->data;
+    returnedNode = cur;
+    return StatusID::SUCCESS;
+}
+
+template <class Data>
+std::vector<Data*> Trie<Data>::getPrefixMatches(const std::string& keyword) {
+    std::vector<Data*> results;
+    Data returnedData;
+    Node* cur;
+    if (Trie<Data>::getData(keyword, returnedData, cur) == StatusID::SUCCESS) {
+            Trie<Data>::getResults(cur, results);
+    }
+    return results;
+}
+
+template <class Data>
+void Trie<Data>::getResults(Node* cur, std::vector<Record>& results) {
+	if (cur == nullptr) {
+		return;
+	}
+	if (!cur->isEmpty) {
+		results.push_back(cur->data);
+	}
+	for (int i = 0; i < cur->child.size(); i++) {
+		Trie<Data>::getResults(cur->child[i], results);
+	}
+}
