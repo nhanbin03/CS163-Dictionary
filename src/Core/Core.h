@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
+#include <fstream>
 class Core {
 public:
     struct Word;
@@ -19,7 +19,7 @@ public:
     struct Word {
         std::string str;
         std::vector<Definition *> defs;
-
+        bool IsFavorite ;
         Word(const std::string &str);
     };
 

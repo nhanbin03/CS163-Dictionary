@@ -61,3 +61,15 @@ std::string convertToNonAccentVN(std::string str) {
 
     return str;
 }
+std::string normalize(std::string str)
+{
+    for( int i=0;i<str.length();i++)
+    {
+        if(str[i]<='Z'&&str[i]>='A')
+        {
+            str[i]+=32;
+        }
+        
+    }
+    return str;
+}
