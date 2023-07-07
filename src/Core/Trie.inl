@@ -25,7 +25,24 @@ Trie<Data>::Trie(std::string charSet) {
 
 template <class Data>
 Trie<Data>::StatusID Trie<Data>::insert(const Data& newData) {
-    return StatusID();
+    std:: string word = newData.str;
+    Node* cur = mRoot;
+    if (cur == nullptr){
+        cur = new Node(newData(), mNumChild);
+    }
+    for (int i = 0; i < word.size(); i++){
+        int index = mMapping[word[i]];
+        if (cur->child[index] == nullptr){
+            cur->child[index] = new Node(newData(), mNumChild);
+        }
+        cur = cur->child[index];
+    }
+    if (cur->isEmpty == false){
+        return StatusID::DUPLICATED;
+    }
+    cur->data = newData;
+    cur->isEmpty = false;
+    return StatusID::SUCCESS;
 }
 
 template <class Data>
