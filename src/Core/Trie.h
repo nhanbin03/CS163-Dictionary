@@ -28,19 +28,22 @@ public:
 
     StatusID insert(const Data& newData);
     StatusID remove(const std::string& keyword);
-    StatusID getData(const std::string& keyword, Data& returnedData,
-                     Node*& returnedNode);
+    StatusID getData(const std::string& keyword, Data& returnedData);
     // searchs for the keyword and returns
     // the data found to returnedData
     // data's node found to returnedNode
     std::vector<Data*> getPrefixMatches(const std::string& keyword);
-    void getResults(Node* cur, std::vector<Data*>& results);
 
 private:
     int mMapping[256]; // convert char to child index
     int mNumChild;
 
     Node* mRoot;
+
+private:
+    void getResults(Node* cur, std::vector<Data*>& results);
+    StatusID getDataHelper(const std::string& keyword, Data& returnedData,
+                           Node*& returnedNode);
 };
 
 #include "Trie.inl"

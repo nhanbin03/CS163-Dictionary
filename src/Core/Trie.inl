@@ -67,25 +67,8 @@ typename Trie<Data>::StatusID Trie<Data>::remove(const std::string& keyword) {
 
 template <class Data>
 typename Trie<Data>::StatusID Trie<Data>::getData(const std::string& keyword,
-                                                  Data& returnedData,
-                                                  Node*& returnedNode) {
-    Node* cur = mRoot;
-    if (cur == nullptr)
-        return StatusID::NOT_FOUND;
-
-    for (int i = 0; i < keyword.size(); i++) {
-        int index = mMapping[keyword[i]];
-        if (cur->child[index] == nullptr)
-            return StatusID::NOT_FOUND;
-        cur = cur->child[index];
-    }
-
-    if (cur->isEmpty == true)
-        return StatusID::NOT_FOUND;
-
-    returnedData = cur->data;
-    returnedNode = cur;
-    return StatusID::SUCCESS;
+                                                  Data& returnedData) {
+    return getDataHelper(keyword, returnedData, nullptr);
 }
 
 template <class Data>
@@ -110,4 +93,26 @@ void Trie<Data>::getResults(Node* cur, std::vector<Data*>& results) {
     for (int i = 0; i < cur->child.size(); i++) {
         Trie<Data>::getResults(cur->child[i], results);
     }
+}
+
+template <class Data>
+typename Trie<Data>::StatusID Trie<Data>::getDataHelper(
+    const std::string& keyword, Data& returnedData, Node*& returnedNode) {
+    Node* cur = mRoot;
+    if (cur == nullptr)
+        return StatusID::NOT_FOUND;
+
+    for (int i = 0; i < keyword.size(); i++) {
+        int index = mMapping[keyword[i]];
+        if (cur->child[index] == nullptr)
+            return StatusID::NOT_FOUND;
+        cur = cur->child[index];
+    }
+
+    if (cur->isEmpty == true)
+        return StatusID::NOT_FOUND;
+
+    returnedData = cur->data;
+    returnedNode = cur;
+    return StatusID::SUCCESS;
 }
