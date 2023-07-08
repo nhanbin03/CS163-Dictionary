@@ -24,7 +24,7 @@ Trie<Data>::Trie(std::string charSet) {
 }
 
 template <class Data>
-Trie<Data>::StatusID Trie<Data>::insert(const Data& newData) {
+typename Trie<Data>::StatusID Trie<Data>::insert(const Data& newData) {
     std::string word = newData.str;
     Node* cur = mRoot;
     if (cur == nullptr) {
@@ -46,7 +46,7 @@ Trie<Data>::StatusID Trie<Data>::insert(const Data& newData) {
 }
 
 template <class Data>
-Trie<Data>::StatusID Trie<Data>::remove(const std::string& keyword) {
+typename Trie<Data>::StatusID Trie<Data>::remove(const std::string& keyword) {
     Node* cur = mRoot;
     if (cur == nullptr) {
         return StatusID::NOT_FOUND;
@@ -66,9 +66,9 @@ Trie<Data>::StatusID Trie<Data>::remove(const std::string& keyword) {
 }
 
 template <class Data>
-Trie<Data>::StatusID Trie<Data>::getData(const std::string& keyword,
-                                         Data& returnedData,
-                                         Node*& returnedNode) {
+typename Trie<Data>::StatusID Trie<Data>::getData(const std::string& keyword,
+                                                  Data& returnedData,
+                                                  Node*& returnedNode) {
     Node* cur = mRoot;
     if (cur == nullptr)
         return StatusID::NOT_FOUND;
