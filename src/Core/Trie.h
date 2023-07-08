@@ -28,13 +28,13 @@ public:
 
     StatusID insert(const Data& newData);
     StatusID remove(const std::string& keyword);
-    StatusID getData(const std::string& keyword,
-                     Data& returnedData, Node*& returnedNode); 
-                                        // searchs for the keyword and returns
-                                        // the data found to returnedData
-                                        // data's node found to returnedNode
+    StatusID getData(const std::string& keyword, Data& returnedData,
+                     Node*& returnedNode);
+    // searchs for the keyword and returns
+    // the data found to returnedData
+    // data's node found to returnedNode
     std::vector<Data*> getPrefixMatches(const std::string& keyword);
-    void Trie<Data>::getResults(Node* cur, std::vector<Record>& results);
+    void getResults(Node* cur, std::vector<Data*>& results);
 
 private:
     int mMapping[256]; // convert char to child index

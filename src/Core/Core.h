@@ -1,10 +1,13 @@
 #ifndef CORE_CORE_H
 #define CORE_CORE_H
 
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <fstream>
+
+#include "Trie.h"
+
 class Core {
 public:
     struct Word;
@@ -19,7 +22,7 @@ public:
     struct Word {
         std::string str;
         std::vector<Definition *> defs;
-        bool IsFavorite ;
+        bool IsFavorite;
         Word(const std::string &str);
     };
 
