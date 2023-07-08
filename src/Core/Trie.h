@@ -42,8 +42,8 @@ private:
 
 private:
     void getResults(Node* cur, std::vector<Data*>& results);
-    StatusID getDataHelper(const std::string& keyword, Data& returnedData,
-                           Node*& returnedNode);
+    StatusID getData(const std::string& keyword, Data& returnedData,
+                     Node*& returnedNode);
 };
 
 #include "Trie.inl"

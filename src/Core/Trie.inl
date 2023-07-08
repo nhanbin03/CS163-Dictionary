@@ -68,7 +68,7 @@ typename Trie<Data>::StatusID Trie<Data>::remove(const std::string& keyword) {
 template <class Data>
 typename Trie<Data>::StatusID Trie<Data>::getData(const std::string& keyword,
                                                   Data& returnedData) {
-    return getDataHelper(keyword, returnedData, nullptr);
+    return getData(keyword, returnedData, nullptr);
 }
 
 template <class Data>
@@ -96,8 +96,9 @@ void Trie<Data>::getResults(Node* cur, std::vector<Data*>& results) {
 }
 
 template <class Data>
-typename Trie<Data>::StatusID Trie<Data>::getDataHelper(
-    const std::string& keyword, Data& returnedData, Node*& returnedNode) {
+typename Trie<Data>::StatusID Trie<Data>::getData(const std::string& keyword,
+                                                  Data& returnedData,
+                                                  Node*& returnedNode) {
     Node* cur = mRoot;
     if (cur == nullptr)
         return StatusID::NOT_FOUND;
