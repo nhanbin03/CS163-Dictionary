@@ -15,12 +15,16 @@ Trie<Data>::Node::~Node() {
 }
 
 template <class Data>
-Trie<Data>::Trie(std::string charSet) {
+Trie<Data>::Trie(const std::string& charSet) {
     mRoot = nullptr;
     mNumChild = charSet.size();
     for (int i = 0; i < charSet.size(); i++) {
         mMapping[charSet[i]] = i;
     }
+}
+
+template <class Data>
+Trie<Data>::~Trie() {
 }
 
 template <class Data>

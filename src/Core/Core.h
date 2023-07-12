@@ -1,6 +1,7 @@
 #ifndef CORE_CORE_H
 #define CORE_CORE_H
 
+#include <array>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -34,18 +35,44 @@ public:
     };
 
 public:
-    Core(const std::string &directory);
+    Core(const std::string &directory, const std::string &charSet);
     ~Core();
+
+    std::vector<Word *> searchKeyword(const std::string &inputString);
+    std::vector<Word *> searchDefinition(const std::string &inputString);
+
+    void updateHistory(Word *word);
+    std::vector<Word *> getHistory();
+
+    void addWord(Word *word);
+    void addDefinition(Definition *def, Word *word);
+    void editDefinition(Definition *def, const std::string &newDef);
+    void removeWord(Word *word);
+
+    Word *getRandomWord();
 
     void addFavorite(Word *word);
     void removeFavorite(Word *word);
     bool isFavorite(Word *word);
+    std::vector<Word *> getFavoriteList();
+
+    // pair::first is the question, pair::second [1..4] are choices, [0] is the
+    // answer
+    std::pair<Word *, std::array<Definition *, 5>> getWordQuiz();
+    std::pair<Definition *, std::array<Word *, 5>> getDefinitionQuiz();
+
+    void resetDefault();
 
 private:
+    Trie<Word> mWordSet;
+    Trie<DefWord> mDefWordSet;
+
     std::string mDataDirectory;
 
     std::vector<Word *> mWordCollection;
     std::vector<Definition *> mDefCollection;
+
+    std::vector<Word *> mHistory;
 
 private:
     void saveToFile();

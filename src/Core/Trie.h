@@ -23,7 +23,7 @@ public:
     };
 
 public:
-    Trie(std::string charSet);
+    Trie(const std::string& charSet);
     ~Trie();
 
     StatusID insert(const Data& newData);

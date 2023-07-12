@@ -12,8 +12,10 @@ Core::DefWord::DefWord(const std::string& str)
 : str(str) {
 }
 
-Core::Core(const std::string& directory)
-: mDataDirectory(directory) {
+Core::Core(const std::string& directory, const std::string& charSet)
+: mDataDirectory(directory)
+, mWordSet(charSet)
+, mDefWordSet(charSet) {
 }
 
 Core::~Core() {
