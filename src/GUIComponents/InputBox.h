@@ -13,6 +13,9 @@
 
 class InputBox : public GUIComponent {
 public:
+    static constexpr float CURSOR_TICK_COUNT = 0.5;
+
+public:
     typedef std::shared_ptr<InputBox> Ptr;
 
 public:
@@ -36,13 +39,23 @@ public:
 private:
     void checkInteraction();
 
+    void drawTextOverflow();
+    void drawTextWrapped();
+
+    void drawCursorIndicator(float x, float y1, float y2);
+
 private:
     std::string mInputText;
     Color mTextColor{BLACK};
+    int mTextSize{0};
 
     bool mIsFocused{false};
+    int mIndexPos{0};
+    float mCursorTick{0};
 
     float mCornerRoundness{0.5};
+
+    bool mIsWrapped{false};
 };
 
 #endif // GUICOMPONENTS_INPUTBOX_H

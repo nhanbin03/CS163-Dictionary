@@ -22,13 +22,26 @@ void InputBox::update(float dt) {
     if (mIsFocused) {
         int key = GetCharPressed();
         while (key > 0) {
-            mInputText.push_back(key);
+            mInputText.insert(mInputText.begin() + mIndexPos, key);
+            mIndexPos++;
             key = GetCharPressed();
         }
 
-        if (IsKeyPressed(KEY_BACKSPACE) && mInputText.size() > 0) {
-            mInputText.pop_back();
+        if (IsKeyPressed(KEY_BACKSPACE) && mIndexPos > 0) {
+            mInputText.erase(mInputText.begin() + mIndexPos - 1);
+            mIndexPos--;
         }
+        if (IsKeyPressed(KEY_RIGHT) && mIndexPos < mInputText.size()) {
+            mIndexPos++;
+        }
+        if (IsKeyPressed(KEY_LEFT) && mIndexPos > 0) {
+            mIndexPos--;
+        }
+    }
+
+    mCursorTick += dt;
+    if (mCursorTick > 2 * CURSOR_TICK_COUNT) {
+        mCursorTick -= 2 * CURSOR_TICK_COUNT;
     }
 }
 
@@ -37,22 +50,11 @@ void InputBox::draw() {
     if (mBorderThickness != 0)
         DrawRectangleRoundedLines(mRect, mCornerRoundness, ROUNDED_SEGMENTS,
                                   mBorderThickness, mBorderColor);
-
-    int textSize = mRect.height * 2 / 3;
-    std::string displayText = mInputText;
-    if (mIsFocused)
-        displayText += '_';
-    Vector2 textBounds =
-        MeasureTextEx(FontHolder::getInstance().get(FontID::Inter, textSize),
-                      displayText.c_str(), textSize, 0);
-
-    BeginScissorMode(mRect.x, mRect.y, mRect.width, mRect.height);
-    DrawTextEx(
-        FontHolder::getInstance().get(FontID::Inter, textSize),
-        displayText.c_str(),
-        {mRect.x + textSize / 3, mRect.y + mRect.height / 2 - textBounds.y / 2},
-        textSize, 0, mTextColor);
-    EndScissorMode();
+    if (mIsWrapped) {
+        drawTextWrapped();
+    } else {
+        drawTextOverflow();
+    }
 }
 
 void InputBox::setCornerRoundness(float cornerRoundness) {
@@ -94,5 +96,42 @@ void InputBox::checkInteraction() {
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             mIsFocused = false;
         }
+    }
+}
+
+void InputBox::drawTextOverflow() {
+    int textSize = mTextSize;
+    if (mTextSize == 0) {
+        textSize = mRect.height * 2 / 3;
+    }
+    std::string displayText = mInputText;
+    Vector2 textBounds =
+        MeasureTextEx(FontHolder::getInstance().get(FontID::Inter, textSize),
+                      displayText.c_str(), textSize, 0);
+
+    BeginScissorMode(mRect.x + textSize / 3, mRect.y,
+                     mRect.width - textSize / 3, mRect.height);
+    float startingX = mRect.x + textSize / 3;
+    float startingY = mRect.y + textSize / 3;
+    DrawTextEx(FontHolder::getInstance().get(FontID::Inter, textSize),
+               displayText.c_str(), {startingX, startingY}, textSize, 0,
+               mTextColor);
+    if (mIsFocused)
+        drawCursorIndicator(
+            startingX
+                + MeasureTextEx(
+                      FontHolder::getInstance().get(FontID::Inter, textSize),
+                      displayText.substr(0, mIndexPos).c_str(), textSize, 0)
+                      .x,
+            startingY, startingY + textBounds.y);
+    EndScissorMode();
+}
+
+void InputBox::drawTextWrapped() {
+}
+
+void InputBox::drawCursorIndicator(float x, float y1, float y2) {
+    if (mCursorTick < CURSOR_TICK_COUNT) {
+        DrawLineEx({x, y1}, {x, y2}, abs(y1 - y2) * 0.05, mTextColor);
     }
 }
