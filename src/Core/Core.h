@@ -11,6 +11,9 @@
 
 class Core {
 public:
+    static constexpr int RESULT_LIMIT = 20;
+
+public:
     struct Word;
 
     struct Definition {
