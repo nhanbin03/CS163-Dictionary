@@ -47,7 +47,7 @@ public:
     Word *addWord(std::string wordString);
     Definition *addDefinition(std::string defString, Word *word);
     void editDefinition(Definition *def, const std::string &newDef);
-    void removeWord(Word *word); // Caution!! Remember to delete its definition
+    void removeWord(Word *word); // Caution!! Remember to delete its definitions
                                  // AND the word in history
 
     Word *getRandomWord();
