@@ -68,7 +68,8 @@ private:
     Trie<Word> mWordSet;
     Trie<DefWord> mDefWordSet;
 
-    std::string mDataSpecifier;
+    std::string mDataSpecifier; // can be "emoji", "engeng", "engvie", "slang"
+                                // or "vieeng"
 
     std::vector<Word *> mWordCollection;
     std::vector<Definition *> mDefCollection;
