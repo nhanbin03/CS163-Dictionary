@@ -1,15 +1,16 @@
 #include "Core.h"
+#include "../Helper.h"
 
 Core::Word::Word(const std::string& str)
-: str(str) {
+: str(normalize(str)) {
 }
 
 Core::Definition::Definition(const std::string& str)
-: str(str) {
+: str(normalize(str)) {
 }
 
 Core::DefWord::DefWord(const std::string& str)
-: str(str) {
+: str(normalize(str)) {
 }
 
 Core::Core(const std::string& specifier, const std::string& charSet)

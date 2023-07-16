@@ -14,7 +14,7 @@ public:
     };
 
 public:
-    class Node {
+    struct Node {
         Data data;
         std::vector<Node*> child;
         bool isEmpty{true};
