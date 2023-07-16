@@ -44,8 +44,8 @@ public:
     void updateHistory(Word *word);
     std::vector<Word *> getHistory();
 
-    void addWord(Word *word);
-    void addDefinition(Definition *def, Word *word);
+    Word *addWord(std::string wordString);
+    Definition *addDefinition(std::string defString, Word *word);
     void editDefinition(Definition *def, const std::string &newDef);
     void removeWord(Word *word); // Caution!! Remember to delete its definition
                                  // AND the word in history
@@ -76,6 +76,7 @@ private:
     std::vector<Word *> mHistory;
 
 private:
+    void loadFromFile();
     void saveToFile();
 };
 
