@@ -25,6 +25,7 @@ Trie<Data>::Trie(const std::string& charSet) {
 
 template <class Data>
 Trie<Data>::~Trie() {
+    delete mRoot;
 }
 
 template <class Data>
@@ -84,6 +85,12 @@ std::vector<Data*> Trie<Data>::getPrefixMatches(const std::string& keyword) {
         Trie<Data>::getResults(cur, results);
     }
     return results;
+}
+
+template <class Data>
+inline void Trie<Data>::clear() {
+    delete mRoot;
+    mRoot = nullptr;
 }
 
 template <class Data>
