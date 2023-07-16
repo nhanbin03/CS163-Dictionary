@@ -35,7 +35,7 @@ public:
     };
 
 public:
-    Core(const std::string &directory, const std::string &charSet);
+    Core(const std::string &specifier, const std::string &charSet);
     ~Core();
 
     std::vector<Word *> searchKeyword(const std::string &inputString);
@@ -68,7 +68,7 @@ private:
     Trie<Word> mWordSet;
     Trie<DefWord> mDefWordSet;
 
-    std::string mDataDirectory;
+    std::string mDataSpecifier;
 
     std::vector<Word *> mWordCollection;
     std::vector<Definition *> mDefCollection;

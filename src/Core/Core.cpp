@@ -12,8 +12,8 @@ Core::DefWord::DefWord(const std::string& str)
 : str(str) {
 }
 
-Core::Core(const std::string& directory, const std::string& charSet)
-: mDataDirectory(directory)
+Core::Core(const std::string& specifier, const std::string& charSet)
+: mDataSpecifier(specifier)
 , mWordSet(charSet)
 , mDefWordSet(charSet) {
 }
@@ -44,6 +44,7 @@ bool Core::isFavorite(Word* word) {
 }
 
 void Core::saveToFile() {
+    /*
     std::string filePath = mDataDirectory + "/data.txt";
     std::ofstream outputFile(filePath);
 
@@ -58,4 +59,5 @@ void Core::saveToFile() {
     } else {
         std::cout << "Error: Unable to open file for writing." << std::endl;
     }
+    */
 }
