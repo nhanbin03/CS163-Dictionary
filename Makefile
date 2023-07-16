@@ -6,7 +6,7 @@ BUILD := build
 SRCS := $(shell find $(SRC) -type f -name '*.cpp')
 OBJS := $(subst $(SRC)/,$(BUILD)/,$(addsuffix .o,$(basename $(SRCS))))
 
-all: $(TARGET)
+all: clean $(TARGET)
 	./$(TARGET)
 
 $(TARGET): $(OBJS)
@@ -24,4 +24,4 @@ $(BUILD)/%.o: $(SRC)/%.cpp
 
 .PHONY: clean
 clean:
-	rm -rf build
+	rm -rf $(BUILD)
