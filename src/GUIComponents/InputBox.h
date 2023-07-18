@@ -27,6 +27,10 @@ public:
     void update(float dt);
     void draw();
 
+    void setOverflow();
+    void setWrapped();
+
+    void setTextSize(int textSize);
     void setCornerRoundness(float cornerRoundness);
 
     std::string getInputText() const;
