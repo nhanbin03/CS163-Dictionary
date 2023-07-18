@@ -19,7 +19,7 @@ public:
     typedef std::shared_ptr<InputBox> Ptr;
 
 public:
-    explicit InputBox(Rectangle bounds = {0, 0, 0, 0});
+    explicit InputBox(std::string defaultText, Rectangle bounds = {0, 0, 0, 0});
     ~InputBox();
 
     void reset();

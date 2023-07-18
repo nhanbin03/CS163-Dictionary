@@ -2,11 +2,13 @@
 
 #include <iostream>
 
-InputBox::InputBox(Rectangle bounds) {
+InputBox::InputBox(std::string defaultText, Rectangle bounds) {
     mRect = bounds;
     mColor = WHITE;
     mBorderColor = BLACK;
     mBorderThickness = 1;
+    mInputText = defaultText;
+    mIndexPos = defaultText.size();
 }
 
 InputBox::~InputBox() {
