@@ -77,8 +77,8 @@ typename Trie<Data>::StatusID Trie<Data>::getData(const std::string& keyword,
 }
 
 template <class Data>
-std::vector<Data*> Trie<Data>::getPrefixMatches(const std::string& keyword) {
-    std::vector<Data*> results;
+std::vector<Data> Trie<Data>::getPrefixMatches(const std::string& keyword) {
+    std::vector<Data> results;
     Data returnedData;
     Node* cur;
     if (Trie<Data>::getData(keyword, returnedData, cur) == StatusID::SUCCESS) {
@@ -94,7 +94,7 @@ inline void Trie<Data>::clear() {
 }
 
 template <class Data>
-void Trie<Data>::getResults(Node* cur, std::vector<Data*>& results) {
+void Trie<Data>::getResults(Node* cur, std::vector<Data>& results) {
     if (cur == nullptr) {
         return;
     }
