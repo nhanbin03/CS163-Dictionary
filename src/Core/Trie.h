@@ -14,7 +14,7 @@ public:
     };
 
 public:
-    class Node {
+    struct Node {
         Data data;
         std::vector<Node*> child;
         bool isEmpty{true};
@@ -34,7 +34,7 @@ public:
     // data's node found to returnedNode
     StatusID getData(const std::string& keyword, Data& returnedData);
 
-    std::vector<Data*> getPrefixMatches(const std::string& keyword);
+    std::vector<Data> getPrefixMatches(const std::string& keyword);
 
     void clear();
 
@@ -45,7 +45,7 @@ private:
     Node* mRoot;
 
 private:
-    void getResults(Node* cur, std::vector<Data*>& results);
+    void getResults(Node* cur, std::vector<Data>& results);
     StatusID getData(const std::string& keyword, Data& returnedData,
                      Node*& returnedNode);
 };
