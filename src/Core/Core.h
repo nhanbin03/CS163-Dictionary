@@ -68,8 +68,8 @@ public:
     void resetDefault();
 
 private:
-    Trie<Word> mWordSet;
-    Trie<DefWord> mDefWordSet;
+    Trie<Word*> mWordSet;
+    Trie<DefWord*> mDefWordSet;
 
     std::string mDataSpecifier; // can be "emoji", "engeng", "engvie", "slang"
                                 // or "vieeng"
