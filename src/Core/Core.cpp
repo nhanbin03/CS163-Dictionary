@@ -61,3 +61,7 @@ void Core::saveToFile() {
     }
     */
 }
+
+std::vector<Core::Word*> Core::searchKeyword(const std::string &inputString){
+    return mWordSet.getPrefixMatches(normalize(inputString));
+}
