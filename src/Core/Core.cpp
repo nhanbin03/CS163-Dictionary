@@ -131,3 +131,13 @@ std::pair<Core::Definition *, std::array<Core::Word *, 5>> Core::getDefinitionQu
     return std::make_pair(question, 
     std::array<Word*, 5>{choices[0], choices[1], choices[2], choices[3], choices[4]});
 }
+
+std::vector< Core::Word *> Core::getFavoriteList(){
+    std::vector<Word*> favoriteList;
+    for(Word* word : mWordCollection){
+        if(word->IsFavorite){
+            favoriteList.push_back(word);
+        }
+    }
+    return favoriteList;
+}
