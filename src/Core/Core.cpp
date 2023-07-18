@@ -66,3 +66,11 @@ void Core::saveToFile() {
 std::vector<Core::Word*> Core::searchKeyword(const std::string &inputString){
     return mWordSet.getPrefixMatches(normalize(inputString));
 }
+
+Core::Word* Core::getRandomWord(){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, mWordCollection.size() - 1);
+    int randomIndex = dist(gen);
+    return mWordCollection[randomIndex];
+}
