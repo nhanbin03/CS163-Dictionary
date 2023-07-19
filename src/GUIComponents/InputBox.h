@@ -19,7 +19,7 @@ public:
     typedef std::shared_ptr<InputBox> Ptr;
 
 public:
-    explicit InputBox(Rectangle bounds = {0, 0, 0, 0});
+    explicit InputBox(std::string defaultText, Rectangle bounds = {0, 0, 0, 0});
     ~InputBox();
 
     void reset();
@@ -27,6 +27,10 @@ public:
     void update(float dt);
     void draw();
 
+    void setOverflow();
+    void setWrapped();
+
+    void setTextSize(int textSize);
     void setCornerRoundness(float cornerRoundness);
 
     std::string getInputText() const;
