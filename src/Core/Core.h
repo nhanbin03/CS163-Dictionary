@@ -83,6 +83,8 @@ private:
 private:
     void loadFromFile();
     void saveToFile();
+    std::string extractFirstWord(const std::string& input);
+    void loadDataFromSpecifier(const std::string& mdataspecifier, std::vector<std::string>& words);
 };
 
 #endif // CORE_CORE_H

@@ -135,6 +135,40 @@ Core::getDefinitionQuiz() {
         question, std::array<Word*, 5>{choices[0], choices[1], choices[2],
                                        choices[3], choices[4]});
 }
+string Core:: extractFirstWord(const std::string& input) {
+    std::string firstWord;
+    size_t pos = input.find('\t');
+    if (pos != std::string::npos) {
+        firstWord = input.substr(0, pos);
+    } else {
+        firstWord = input;
+    }
+    return firstWord;
+}
+
+void Core:: loadDataFromSpecifier(const std::string& mdataspecifier, std::vector<std::string>& words) {
+    std::string dataFilePath = mdataspecifier + "/data.txt";
+    std::ifstream file(dataFilePath);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file: " << dataFilePath << std::endl;
+        return;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+    words.push_back( extractFirstWord(line));
+    
+    }
+
+    file.close();
+for( int i=0;i<words.size();i++)
+{
+    Word* myWord;
+    mWordSet.getData(words[i],myWord);
+    addFavorite(myWord);
+}
+
+}
 
 std::vector<Core::Word*> Core::getFavoriteList() {
     std::vector<Word*> favoriteList;
