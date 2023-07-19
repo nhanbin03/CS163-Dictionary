@@ -131,7 +131,7 @@ std::pair<Core::Definition *, std::array<Core::Word *, 5>> Core::getDefinitionQu
     return std::make_pair(question, 
     std::array<Word*, 5>{choices[0], choices[1], choices[2], choices[3], choices[4]});
 }
-string Core:: extractFirstWord(const std::string& input) {
+std:: string Core::extractFirstWord(const std::string& input) {
     std::string firstWord;
     size_t pos = input.find('\t');
     if (pos != std::string::npos) {
@@ -160,8 +160,10 @@ void Core:: loadDataFromSpecifier(const std::string& mdataspecifier, std::vector
 for( int i=0;i<words.size();i++)
 {
     Word* myWord;
-    mWordSet.getData(words[i],myWord);
-    addFavorite(myWord);
+    if (mWordSet.getData(words[i],myWord)==Trie<Word*>::StatusID::SUCCESS) 
+   addFavorite(myWord);
+else // thong bao loi 
+std:: cout<<"error";
 }
 
 }
