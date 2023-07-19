@@ -73,7 +73,8 @@ typename Trie<Data>::StatusID Trie<Data>::remove(const std::string& keyword) {
 template <class Data>
 typename Trie<Data>::StatusID Trie<Data>::getData(const std::string& keyword,
                                                   Data& returnedData) {
-    return getData(keyword, returnedData, nullptr);
+    Node* tmp;
+    return getData(keyword, returnedData, tmp);
 }
 
 template <class Data>
