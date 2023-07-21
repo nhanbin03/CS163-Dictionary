@@ -181,3 +181,33 @@ std::vector<Core::Word*> Core::getFavoriteList() {
     }
     return favoriteList;
 }
+void Core:: loadDataFromHistory(const std::string& mdataspecifier ) 
+{ 
+    std::string dataFilePath = mdataspecifier + "/data.txt";//duong dan cua history
+    std::ifstream file(dataFilePath);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file: " << dataFilePath << std::endl;
+        return;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) 
+	{   Word* myWord;
+        if (mWordSet.getData(extractFirstWord(line),myWord)==Trie<Word*>::StatusID::SUCCESS) 
+    mHistory.push_back( myWord);
+    
+    }
+
+    file.close();
+
+}
+std::string extractSecondWord(const std::string& input) {
+    std::string secondWord;
+    size_t pos = input.find('\t');
+    if (pos != std::string::npos) {
+        // Adding 1 to pos to skip the space and start from the character after it
+        secondWord = input.substr(pos + 1);
+    } 
+    
+    return secondWord;
+}
