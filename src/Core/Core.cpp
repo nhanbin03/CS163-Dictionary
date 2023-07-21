@@ -201,11 +201,31 @@ void Core:: loadDataFromHistory(const std::string& mdataspecifier2 )
     file.close();
 
 }
-std::string extractSecondWord(const std::string& input) {
+std::string Core::  extractWord1(const std::string& input) {
+    std::string firstWord;
+    size_t pos = input.find(' ');
+    if (pos != std::string::npos) {
+        firstWord = input.substr(0, pos);
+    } else {
+        firstWord = input;
+    }
+    return firstWord;
+}
+std::string Core:: extractWord2(const std::string& input) {
     std::string secondWord;
     size_t pos = input.find('\t');
     if (pos != std::string::npos) {
-        // Adding 1 to pos to skip the space and start from the character after it
+      
+        secondWord = input.substr(pos + 1);
+    } 
+    
+    return secondWord;
+}
+std::string Core:: extractSecondWord(const std::string& input) {
+    std::string secondWord;
+    size_t pos = input.find('\t');
+    if (pos != std::string::npos) {
+        
         secondWord = input.substr(pos + 1);
     } 
     
@@ -228,6 +248,35 @@ void Core:: loadWordLocal(const std::string& mdataspecifier3) {
 		{Word* a=new Word (s);
         mWordCollection.push_back(a);
           mWordSet.insert(a);
+        }
+    }
+
+    file.close();
+}
+void Core::loadDefWordLocal(const std::string& mdataspecifier4) {
+    std::string dataFilePath = mdataspecifier4 + "/data.txt";
+    std::ifstream file(dataFilePath);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file: " << dataFilePath << std::endl;
+        return;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        std::string s = extractSecondWord(line);
+        normalize(s);
+        std:: string TheWord=extractFirstWord(line);
+        Word * k=new Word(TheWord );
+       Definition* i= addDefinition(s,k );
+        mDefCollection.push_back(i);
+        while (!line.empty()) {
+            DefWord* myDefWord;
+            if (mDefWordSet.getData(extractWord1(line), myDefWord) == Trie<DefWord*>::StatusID::NOT_FOUND) {
+                DefWord * a = new DefWord(s);
+                
+                mDefWordSet.insert( a);
+            }
+            line = extractWord2(line);
         }
     }
 
