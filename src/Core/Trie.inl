@@ -30,7 +30,7 @@ Trie<Data>::~Trie() {
 
 template <class Data>
 typename Trie<Data>::StatusID Trie<Data>::insert(const Data& newData) {
-    std::string word = newData.str;
+    std::string word = newData->str;
     Node* cur = mRoot;
     if (cur == nullptr) {
         cur = new Node(Data(), mNumChild);

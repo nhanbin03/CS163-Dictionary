@@ -181,9 +181,9 @@ std::vector<Core::Word*> Core::getFavoriteList() {
     }
     return favoriteList;
 }
-void Core:: loadDataFromHistory(const std::string& mdataspecifier ) 
+void Core:: loadDataFromHistory(const std::string& mdataspecifier2 ) 
 { 
-    std::string dataFilePath = mdataspecifier + "/data.txt";//duong dan cua history
+    std::string dataFilePath = mdataspecifier2 + "/data.txt";//duong dan cua history
     std::ifstream file(dataFilePath);
     if (!file.is_open()) {
         std::cerr << "Error opening file: " << dataFilePath << std::endl;
@@ -210,4 +210,26 @@ std::string extractSecondWord(const std::string& input) {
     } 
     
     return secondWord;
+}
+void Core:: loadWordLocal(const std::string& mdataspecifier3) {
+    std::string dataFilePath = mdataspecifier3 + "/data.txt";//duong dan local
+    std::ifstream file(dataFilePath);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file: " << dataFilePath << std::endl;
+        return;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+        std::string s = extractFirstWord(line);
+        
+        Word* myWord ;
+         if (mWordSet.getData(s,myWord)==Trie<Word*>::StatusID::NOT_FOUND)
+		{Word* a=new Word (s);
+        mWordCollection.push_back(a);
+          mWordSet.insert(a);
+        }
+    }
+
+    file.close();
 }

@@ -65,9 +65,9 @@ public:
     // answer
     std::pair<Word *, std::array<Definition *, 5>> getWordQuiz();
     std::pair<Definition *, std::array<Word *, 5>> getDefinitionQuiz();
-
+   void loadWordLocal(const std::string& mdataspecifier3);
     void resetDefault();
-
+    
 private:
     Trie<Word*> mWordSet;
     Trie<DefWord*> mDefWordSet;
@@ -87,6 +87,7 @@ private:
     void loadDataFromSpecifier(const std::string& mdataspecifier, std::vector<std::string>& words);
     void loadDataFromHistory(const std::string& mdataspecifier2 ) ;
     std::string extractSecondWord(const std::string& input);
+   
 };
 
 #endif // CORE_CORE_H
