@@ -37,3 +37,4 @@ include
 .vscode
 build
 lib
+data
