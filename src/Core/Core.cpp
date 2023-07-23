@@ -23,6 +23,35 @@ Core::Core(const std::string& specifier, const std::string& charSet)
 Core::~Core() {
 }
 
+void Core::updateHistory(Word *word) {
+    if (word != nullptr) {
+        if (mHistory.size() >= RESULT_LIMIT) {
+            mHistory.erase(mHistory.begin());
+        }
+        mHistory.insert(mHistory.begin(), word);
+    }
+}
+
+std::vector<Word *> Core::getHistory() {
+    return mHistory;
+}
+
+void Core::removeWord(Word *word) {
+    if (word != nullptr) {
+        for (int i = 0; i < mHistory.size(); i++) {
+            if (mHistory[i] == word) {
+                mHistory.erase(mHistory.begin() + i);
+                break;
+            }
+        }
+        mWordSet.remove(word->str);
+        for (int i = 0; i < word->defs.size(); i++) {
+            delete word->defs[i];
+        }
+        delete word;
+    }
+}
+
 void Core::addFavorite(Word* word) {
     if (word->IsFavorite == false) {
         word->IsFavorite = true;
