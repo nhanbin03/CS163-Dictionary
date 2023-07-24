@@ -26,7 +26,7 @@ Core::~Core() {
 void Core::updateHistory(Word *word) {
     if (word != nullptr) {
         if (mHistory.size() >= RESULT_LIMIT) {
-            mHistory.erase(mHistory.begin());
+            mHistory.erase(mHistory.end());
         }
         mHistory.insert(mHistory.begin(), word);
     }
