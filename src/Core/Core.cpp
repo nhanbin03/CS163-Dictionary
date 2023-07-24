@@ -32,7 +32,7 @@ void Core::updateHistory(Word *word) {
     }
 }
 
-std::vector<Word *> Core::getHistory() {
+std::vector<Core::Word *> Core::getHistory() {
     return mHistory;
 }
 
