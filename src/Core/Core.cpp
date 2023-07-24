@@ -25,10 +25,25 @@ Core::~Core() {
 
 void Core::updateHistory(Word *word) {
     if (word != nullptr) {
-        if (mHistory.size() >= RESULT_LIMIT) {
-            mHistory.erase(mHistory.end());
+        bool found = false;
+        for (int i = 0; i < mHistory.size(); i++) {
+            if (mHistory[i] == word) {
+                found = true;
+                mHistory.erase(mHistory.begin() + i);
+                break;
+            }
         }
-        mHistory.insert(mHistory.begin(), word);
+//If we found that the word was already in the vector, we remove it
+//then insert it at the beginning of vector
+//else, remove the last element in vector and insert word.
+        if (found) {
+            mHistory.insert(mHistory.begin(), word);
+        } else {
+            if (mHistory.size() >= RESULT_LIMIT) {
+                mHistory.erase(mHistory.end());
+            }
+            mHistory.insert(mHistory.begin(), word);
+        }
     }
 }
 
@@ -46,6 +61,9 @@ void Core::removeWord(Word *word) {
         }
         mWordSet.remove(word->str);
         for (int i = 0; i < word->defs.size(); i++) {
+            auto iter = std::find(mDefCollection.begin(), mDefCollection.end(),
+                               word->defs[i]);
+            mDefCollection.erase(iter);
             delete word->defs[i];
         }
         delete word;
