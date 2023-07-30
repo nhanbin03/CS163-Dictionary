@@ -383,3 +383,17 @@ void Core::editDefinition(Core::Definition *def, const std::string &newDef){
     Word* k = new Word(TheWord);
     Definition* editDef= addDefinition(s, k);
 }
+void loadFromFile()
+{   
+    string mdataspecifier ;// duoong dan cua favorite(sau nay se them sau)
+     string mdataspecifier2;
+      string mdataspecifier3;
+       string mdataspecifier4;
+     loadDataFromSpecifier(const std::string& mdataspecifier, std::vector<std::string>& words);
+     loadDataFromHistory(const std::string& mdataspecifier2 ) ;
+  
+     loadWordLocal(const std::string& mdataspecifier3) ;
+    loadDefWordLocal(const std::string& mdataspecifier4);
+  
+    
+}
