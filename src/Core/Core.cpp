@@ -384,16 +384,13 @@ void Core::editDefinition(Core::Definition *def, const std::string &newDef){
     Definition* editDef= addDefinition(s, k);
 }
 void Core:: loadFromFile()
-{   std::vector<std::string> words;
-   std:: string mdataspecifier ;// duoong dan cua favorite(sau nay se them sau)
-    std:: string mdataspecifier2;
-      std::string mdataspecifier3;
-       std:: string mdataspecifier4;
-     loadDataFromSpecifier( mdataspecifier,  words);
-     loadDataFromHistory(mdataspecifier2 ) ;
-  
-     loadWordLocal( mdataspecifier3) ;
-    loadDefWordLocal( mdataspecifier4);
-  
-    
-}
+ {   
+    std::vector<std::string> words;
+    std::string favoritePath = "data/favorite/" + mDataSpecifier;
+    std::string localPath = "data/local/" + mDataSpecifier;
+    std::string historyPath = "data/history/" + mDataSpecifier;
+    loadWordLocal(localPath);
+    loadDefWordLocal(localPath); 
+    loadDataFromSpecifier(favoritePath,  words);
+    loadDataFromHistory(historyPath) ;
+ }
