@@ -93,8 +93,8 @@ bool Core::isFavorite(Word* word) {
 }
 
 void Core::saveToFile() {
-    /*
-    std::string filePath = mDataDirectory + "/data.txt";
+    
+    std::string filePath = "data/local/" + mDataSpecifier + "/data.txt";
     std::ofstream outputFile(filePath);
 
     if (outputFile.is_open()) {
@@ -108,7 +108,7 @@ void Core::saveToFile() {
     } else {
         std::cout << "Error: Unable to open file for writing." << std::endl;
     }
-    */
+    
 }
 
 std::vector<Core::Word*> Core::searchKeyword(const std::string& inputString) {
