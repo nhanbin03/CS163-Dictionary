@@ -7,7 +7,7 @@ Core::Word::Word(const std::string& str)
 }
 
 Core::Definition::Definition(const std::string& str)
-: str(normalize(str)) {
+: str(str) {
 }
 
 Core::DefWord::DefWord(const std::string& str)
