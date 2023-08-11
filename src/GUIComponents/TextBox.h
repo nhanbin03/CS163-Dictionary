@@ -19,7 +19,7 @@ public:
     typedef std::shared_ptr<TextBox> Ptr;
 
 public:
-    explicit TextBox(std::string defaultText, Rectangle bounds = {0, 0, 0, 0});
+    explicit TextBox(std::string defaultText = "", Rectangle bounds = {0, 0, 0, 0});
     ~TextBox();
 
     void update(float dt);
