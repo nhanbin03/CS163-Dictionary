@@ -9,8 +9,8 @@
 
 Application::Application()
 : mStateStack(State::Context()) {
-    // SetConfigFlags(FLAG_MSAA_4X_HINT);
-    // SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
+    SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     SetTargetFPS(FPS);
@@ -52,8 +52,10 @@ void Application::registerStates() {
 
 void Application::loadTextures() {
     std::string BASE_PATH = "asset/texture/";
-    // TextureHolder::getInstance().load(TextureID::Logo, BASE_PATH +
-    // "Logo.png");
+    TextureHolder::getInstance().load(TextureID::DefinitionSwitch,
+                                      BASE_PATH + "DefinitionSwitch.png");
+    TextureHolder::getInstance().load(TextureID::KeywordSwitch,
+                                      BASE_PATH + "KeywordSwitch.png");
 }
 
 void Application::loadFonts() {

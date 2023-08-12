@@ -5,6 +5,7 @@
 #include "../GUIComponents/TextBox.h"
 #include "../GUIComponents/InputBox.h"
 #include "../GUIComponents/Button.h"
+#include "../WordList.h"
 #include "State.h"
 
 #include <map>
@@ -20,9 +21,16 @@ public:
 private:
     Core& mDict;
 
+    std::vector<Core::Word*> mWordList;
+
+    bool mIsDefinitionSearch;
+
 private: // UI elements
     InputBox mSearchBar;
     Button mSearchButton;
+    WordList mScrollList;
+
+    Button mModeButton;
 };
 
 #endif // STATES_SEARCHSTATE_H
