@@ -39,6 +39,7 @@ public:
 
     void setText(const std::string text);
     void setTextSize(int size);
+    void setTextBold(bool textBold);
 
     void setTexture(Texture2D texture);
 
@@ -63,6 +64,7 @@ private:
 
     std::string mText;
     int mTextSize{0};
+    bool mIsBold{false};
 
     bool mHasTexture{false};
     Texture2D mTexture;
