@@ -33,6 +33,8 @@ public:
     void setTextSize(int textSize);
     void setCornerRoundness(float cornerRoundness);
 
+    void setPlaceHolder(const std::string &text);
+
     std::string getInputText() const;
 
 public:
@@ -52,6 +54,8 @@ private:
     std::string mInputText;
     Color mTextColor{BLACK};
     int mTextSize{0};
+
+    std::string mPlaceHolder;
 
     bool mIsFocused{false};
     int mIndexPos{0};

@@ -75,6 +75,10 @@ void InputBox::setCornerRoundness(float cornerRoundness) {
     mCornerRoundness = cornerRoundness;
 }
 
+void InputBox::setPlaceHolder(const std::string& text) {
+    mPlaceHolder = text;
+}
+
 std::string InputBox::getInputText() const {
     return mInputText;
 }
@@ -119,23 +123,33 @@ void InputBox::drawTextOverflow() {
         textSize = mRect.height * 2 / 3;
     }
     std::string displayText = mInputText;
+    if (mInputText == "") {
+        displayText = mPlaceHolder;
+    }
     Vector2 textBounds =
         MeasureTextEx(FontHolder::getInstance().get(FontID::Inter, textSize),
                       displayText.c_str(), textSize, 0);
 
     BeginScissorMode(mRect.x + textSize / 3, mRect.y,
                      mRect.width - textSize / 3, mRect.height);
+
     float startingX = mRect.x + textSize / 3;
     float startingY = mRect.y + textSize / 3;
+
+    Color mDisplayColor = mTextColor;
+    if (mInputText == "") {
+        mDisplayColor = Fade(mDisplayColor, 0.2);
+    }
+
     DrawTextEx(FontHolder::getInstance().get(FontID::Inter, textSize),
                displayText.c_str(), {startingX, startingY}, textSize, 0,
-               mTextColor);
+               mDisplayColor);
     if (mIsFocused)
         drawCursorIndicator(
             startingX
                 + MeasureTextEx(
                       FontHolder::getInstance().get(FontID::Inter, textSize),
-                      displayText.substr(0, mIndexPos).c_str(), textSize, 0)
+                      mInputText.substr(0, mIndexPos).c_str(), textSize, 0)
                       .x,
             startingY, startingY + textBounds.y);
     EndScissorMode();
