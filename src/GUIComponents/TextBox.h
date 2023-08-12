@@ -31,12 +31,16 @@ public:
     void setText(std::string text);
     std::string getText() const;
 
+    void makeShort();
+
 private:
     std::string mText;
     Color mTextColor{BLACK};
     int mTextSize{0};
 
     float mCornerRoundness{0.5};
+
+    bool mIsShort{false};
 
 };
 

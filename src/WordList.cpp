@@ -25,6 +25,7 @@ void WordList::draw() {
         TextBox wordText(mList[i]->orgStr, {mRect.x + 35, startingPosY + 7, mRect.width, mRowHeight});
         wordText.setBorderColor(BLANK);
         wordText.setTextSize(32);
+        wordText.makeShort();
         wordText.draw();
         DrawLineEx({mRect.x, startingPosY + mRowHeight}, {mRect.x + mRect.width, startingPosY + mRowHeight}, 0.5, AppColor::TEXT);
     }

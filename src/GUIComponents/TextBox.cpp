@@ -81,15 +81,25 @@ void TextBox::draw() {
         }
     } while (iss);
 
-    // BeginScissorMode(textArea.x, textArea.y, textArea.width, textArea.height);
-    float yOffset = textArea.y;
-    for (auto line : textLines) {
-        float startingX = textArea.x;
-        DrawTextEx(FontHolder::getInstance().get(FontID::Inter, textSize),
-                   line.c_str(), {startingX, yOffset}, textSize, 0, mTextColor);
-        yOffset += (float)textSize;
+    if (mIsShort) {
+        if (textLines.size()) {
+            DrawTextEx(FontHolder::getInstance().get(FontID::Inter, textSize),
+                       textLines[0].c_str(), {textArea.x, textArea.y}, textSize,
+                       0, mTextColor);
+        }
+    } else {
+        BeginScissorMode(textArea.x, textArea.y, textArea.width,
+                         textArea.height);
+        float yOffset = textArea.y;
+        for (auto line : textLines) {
+            float startingX = textArea.x;
+            DrawTextEx(FontHolder::getInstance().get(FontID::Inter, textSize),
+                       line.c_str(), {startingX, yOffset}, textSize, 0,
+                       mTextColor);
+            yOffset += (float)textSize;
+        }
+        EndScissorMode();
     }
-    // EndScissorMode();
 }
 
 void TextBox::setTextSize(int textSize) {
@@ -106,4 +116,8 @@ void TextBox::setText(std::string text) {
 
 std::string TextBox::getText() const {
     return mText;
+}
+
+void TextBox::makeShort() {
+    mIsShort = true;
 }
