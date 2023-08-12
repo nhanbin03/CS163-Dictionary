@@ -88,8 +88,8 @@ void TextBox::draw() {
                        0, mTextColor);
         }
     } else {
-        BeginScissorMode(textArea.x, textArea.y, textArea.width,
-                         textArea.height);
+        // BeginScissorMode(textArea.x, textArea.y, textArea.width,
+        //                  textArea.height);
         float yOffset = textArea.y;
         for (auto line : textLines) {
             float startingX = textArea.x;
@@ -98,7 +98,7 @@ void TextBox::draw() {
                        mTextColor);
             yOffset += (float)textSize;
         }
-        EndScissorMode();
+        // EndScissorMode();
     }
 }
 
