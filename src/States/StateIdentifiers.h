@@ -3,7 +3,7 @@
 
 enum class StateIDs {
     None,
-    Home,
+    Search,
 };
 
 #endif // STATES_STATEIDENTIFIERS_H

@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ResourceHolders/ResourceIdentifiers.h"
-#include "States/HomeState.h"
+#include "States/SearchState.h"
 #include "States/StateIdentifiers.h"
 
 #include "raylib.h"
@@ -9,8 +9,8 @@
 
 Application::Application()
 : mStateStack(State::Context()) {
-    SetConfigFlags(FLAG_MSAA_4X_HINT);
-    SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
+    // SetConfigFlags(FLAG_MSAA_4X_HINT);
+    // SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
 
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     SetTargetFPS(FPS);
@@ -22,7 +22,7 @@ Application::Application()
     //     TextureHolder::getInstance().get(TextureID::IconLogo)));
 
     registerStates();
-    mStateStack.pushState(StateIDs::Home);
+    mStateStack.pushState(StateIDs::Search);
 }
 
 Application::~Application() {
@@ -47,7 +47,7 @@ void Application::render() {
 }
 
 void Application::registerStates() {
-    mStateStack.registerState<HomeState>(StateIDs::Home);
+    mStateStack.registerState<SearchState>(StateIDs::Search);
 }
 
 void Application::loadTextures() {
