@@ -1,5 +1,7 @@
 #include "TextBox.h"
 
+#include <iostream>
+
 TextBox::TextBox(std::string defaultText, Rectangle bounds) {
     mRect = bounds;
     mColor = WHITE;
@@ -79,7 +81,7 @@ void TextBox::draw() {
         }
     } while (iss);
 
-    BeginScissorMode(textArea.x, textArea.y, textArea.width, textArea.height);
+    // BeginScissorMode(textArea.x, textArea.y, textArea.width, textArea.height);
     float yOffset = textArea.y;
     for (auto line : textLines) {
         float startingX = textArea.x;
@@ -87,7 +89,7 @@ void TextBox::draw() {
                    line.c_str(), {startingX, yOffset}, textSize, 0, mTextColor);
         yOffset += (float)textSize;
     }
-    EndScissorMode();
+    // EndScissorMode();
 }
 
 void TextBox::setTextSize(int textSize) {
