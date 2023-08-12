@@ -42,6 +42,8 @@ private:
 
     bool mIsShort{false};
 
+    float mActualHeight;
+
 };
 
 #endif // GUICOMPONENTS_TEXTBOX_H

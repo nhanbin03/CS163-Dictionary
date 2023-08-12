@@ -8,6 +8,7 @@ TextBox::TextBox(std::string defaultText, Rectangle bounds) {
     mBorderColor = BLACK;
     mBorderThickness = 1;
     mText = defaultText;
+    mActualHeight = bounds.height;
 }
 
 TextBox::~TextBox() {
@@ -17,20 +18,22 @@ void TextBox::update(float dt) {
 }
 
 void TextBox::draw() {
-    DrawRectangleRounded(mRect, mCornerRoundness, ROUNDED_SEGMENTS, mColor);
+    DrawRectangleRounded({mRect.x, mRect.y, mRect.width, mActualHeight},
+                         mCornerRoundness, ROUNDED_SEGMENTS, mColor);
     if (mBorderThickness != 0)
-        DrawRectangleRoundedLines(mRect, mCornerRoundness, ROUNDED_SEGMENTS,
-                                  mBorderThickness, mBorderColor);
+        DrawRectangleRoundedLines(
+            {mRect.x, mRect.y, mRect.width, mActualHeight}, mCornerRoundness,
+            ROUNDED_SEGMENTS, mBorderThickness, mBorderColor);
 
     int textSize = mTextSize;
     if (textSize == 0) {
         textSize = std::min(16.0f, mRect.height * 2 / 3); // Default text size
     }
     Rectangle textArea = mRect;
-    textArea.x += mTextSize / 3;
-    textArea.y += mTextSize / 3;
-    textArea.width -= 2 * mTextSize / 3;
-    textArea.height -= 2 * mTextSize / 3;
+    textArea.x += textSize / 3;
+    textArea.y += textSize / 3;
+    textArea.width -= 2 * textSize / 3;
+    // textArea.height -= 2 * textSize / 3;
 
     std::vector<std::string> textLines;
     textLines.push_back("");
@@ -98,6 +101,7 @@ void TextBox::draw() {
                        mTextColor);
             yOffset += (float)textSize;
         }
+        mActualHeight = std::max(mRect.height, yOffset - mRect.y + 2 * textSize / 3); // Update the height in draw function, kinda meh but i cant help
         // EndScissorMode();
     }
 }
