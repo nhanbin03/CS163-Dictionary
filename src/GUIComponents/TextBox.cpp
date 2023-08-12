@@ -91,8 +91,6 @@ void TextBox::draw() {
                        0, mTextColor);
         }
     } else {
-        // BeginScissorMode(textArea.x, textArea.y, textArea.width,
-        //                  textArea.height);
         float yOffset = textArea.y;
         for (auto line : textLines) {
             float startingX = textArea.x;
@@ -102,7 +100,6 @@ void TextBox::draw() {
             yOffset += (float)textSize;
         }
         mActualHeight = std::max(mRect.height, yOffset - mRect.y + 2 * textSize / 3); // Update the height in draw function, kinda meh but i cant help
-        // EndScissorMode();
     }
 }
 
@@ -124,4 +121,8 @@ std::string TextBox::getText() const {
 
 void TextBox::makeShort() {
     mIsShort = true;
+}
+
+float TextBox::getHeight() {
+    return mActualHeight;
 }

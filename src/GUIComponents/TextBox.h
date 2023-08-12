@@ -33,6 +33,8 @@ public:
 
     void makeShort();
 
+    float getHeight();
+
 private:
     std::string mText;
     Color mTextColor{BLACK};
