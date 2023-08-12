@@ -10,6 +10,12 @@ WordList::~WordList() {
 
 void WordList::update(float dt) {
     mPositionY += (GetMouseWheelMove() * 20);
+    if (mPositionY + mRowHeight * mList.size() < mRect.height) {
+        mPositionY = mRect.height - mRowHeight * mList.size();
+    }
+    if (mPositionY > 0) {
+        mPositionY = 0;
+    }
 }
 
 void WordList::draw() {
