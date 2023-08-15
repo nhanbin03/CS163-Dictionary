@@ -8,7 +8,7 @@
 SearchState::SearchState(StateStack &stack, Context context)
 : State(stack, context)
 , mDict(Dictionary::CORE[0])
-, mScrollList(mWordList) {
+, mScrollList(mWordList, mDict) {
     // Search bar
     mSearchBar.setRect({334, 99, 499, 40});
     mSearchBar.setPlaceHolder("Type Something...");
@@ -76,5 +76,6 @@ void SearchState::draw() {
     mSearchBar.draw();
     mSearchButton.draw();
     mModeButton.draw();
+    // WordInfo word(mDict.getRandomWord(), mDict); word.setRect({293, 163, 731, 477}); word.draw();
     DrawLineEx({341, 163}, {982, 163}, 1, AppColor::TEXT);
 }
