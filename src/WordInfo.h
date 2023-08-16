@@ -20,11 +20,15 @@ public:
 
     void setWord(Core::Word* word);
 
+    bool isActivated();
+
 private:
     Core& mDict;
     Core::Word* mWord{nullptr};
 
     Rectangle mRect;
+
+    Button mReturnButton;
 };
 
 

@@ -36,7 +36,7 @@ void WordList::update(float dt) {
                 this->mInfoPage.setWord(this->mList[i]);
             });
 
-            if (startingPosY < mRect.y
+            if (mInfoPage.isActivated() ||  startingPosY < mRect.y
                 || startingPosY + mRowHeight > mRect.y + mRect.height) {
                 mButtonList[i]->deactivate();
             } else {

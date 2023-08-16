@@ -2,16 +2,23 @@
 
 WordInfo::WordInfo(Core& dict)
 : mDict(dict) {
+    mReturnButton.setRect({341, 532, 75, 75});
+    mReturnButton.setBorderThickness(0);
+    mReturnButton.setCallback([this]() {
+        this->mWord = nullptr;
+    });
 }
 
 WordInfo::~WordInfo() {
 }
 
 void WordInfo::update(float dt) {
+    mReturnButton.update(dt);
 }
 
 void WordInfo::draw() {
-    if (mWord == nullptr) return;
+    if (mWord == nullptr)
+        return;
 
     DrawRectangleRec(mRect, AppColor::BACKGROUND_1);
 
@@ -21,6 +28,10 @@ void WordInfo::draw() {
     wordText.setColor(BLANK);
     wordText.makeShort();
     wordText.draw();
+
+    std::cout << mReturnButton.getRect().x << " " << mReturnButton.getRect().y
+              << " " << mReturnButton.getRect().width << " "<< mReturnButton.getRect().height << "\n";
+    mReturnButton.draw();
 }
 
 void WordInfo::setRect(Rectangle rect) {
@@ -29,4 +40,8 @@ void WordInfo::setRect(Rectangle rect) {
 
 void WordInfo::setWord(Core::Word* word) {
     mWord = word;
+}
+
+bool WordInfo::isActivated() {
+    return mWord != nullptr;
 }
