@@ -36,7 +36,7 @@ SearchState::SearchState(StateStack &stack, Context context)
     });
 
     // Scroll list
-    mScrollList.setRect({341, 163, 641, 394});
+    mScrollList.setRect({341, 163, 641, 477});
 
     // Mode button
     mModeButton.setRect({688, 20, 309, 47});
