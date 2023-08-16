@@ -4,7 +4,8 @@
 enum class TextureID {
     None,
     DefinitionSwitch,
-    KeywordSwitch
+    KeywordSwitch,
+    Return
 };
 
 enum class FontID {

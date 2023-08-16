@@ -56,6 +56,8 @@ void Application::loadTextures() {
                                       BASE_PATH + "DefinitionSwitch.png");
     TextureHolder::getInstance().load(TextureID::KeywordSwitch,
                                       BASE_PATH + "KeywordSwitch.png");
+    TextureHolder::getInstance().load(TextureID::Return,
+                                      BASE_PATH + "Return.png");
 }
 
 void Application::loadFonts() {

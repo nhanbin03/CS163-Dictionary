@@ -4,6 +4,9 @@ WordInfo::WordInfo(Core& dict)
 : mDict(dict) {
     mReturnButton.setRect({341, 532, 75, 75});
     mReturnButton.setBorderThickness(0);
+    mReturnButton.setColor(BLANK);
+    mReturnButton.setTexture(
+        TextureHolder::getInstance().get(TextureID::Return));
     mReturnButton.setCallback([this]() {
         this->mWord = nullptr;
     });
@@ -28,7 +31,7 @@ void WordInfo::draw() {
     wordText.setColor(BLANK);
     wordText.makeShort();
     wordText.draw();
-    
+
     mReturnButton.draw();
 }
 
