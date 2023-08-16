@@ -33,7 +33,6 @@ void WordList::update(float dt) {
             mButtonList[i]->setRect(
                 {mRect.x, startingPosY, mRect.width, mRowHeight - 1});
             mButtonList.back()->setCallback([this, i]() {
-                std::cout << this->mList[i]->orgStr << "\n";
                 this->mInfoPage.setWord(this->mList[i]);
             });
 
