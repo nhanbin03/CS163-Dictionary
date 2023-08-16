@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ResourceHolders/ResourceIdentifiers.h"
-#include "States/HomeState.h"
+#include "States/SearchState.h"
 #include "States/StateIdentifiers.h"
 
 #include "raylib.h"
@@ -22,7 +22,7 @@ Application::Application()
     //     TextureHolder::getInstance().get(TextureID::IconLogo)));
 
     registerStates();
-    mStateStack.pushState(StateIDs::Home);
+    mStateStack.pushState(StateIDs::Search);
 }
 
 Application::~Application() {
@@ -47,13 +47,17 @@ void Application::render() {
 }
 
 void Application::registerStates() {
-    mStateStack.registerState<HomeState>(StateIDs::Home);
+    mStateStack.registerState<SearchState>(StateIDs::Search);
 }
 
 void Application::loadTextures() {
     std::string BASE_PATH = "asset/texture/";
-    // TextureHolder::getInstance().load(TextureID::Logo, BASE_PATH +
-    // "Logo.png");
+    TextureHolder::getInstance().load(TextureID::DefinitionSwitch,
+                                      BASE_PATH + "DefinitionSwitch.png");
+    TextureHolder::getInstance().load(TextureID::KeywordSwitch,
+                                      BASE_PATH + "KeywordSwitch.png");
+    TextureHolder::getInstance().load(TextureID::Return,
+                                      BASE_PATH + "Return.png");
 }
 
 void Application::loadFonts() {

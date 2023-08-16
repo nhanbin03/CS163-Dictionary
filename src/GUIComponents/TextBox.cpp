@@ -1,11 +1,14 @@
 #include "TextBox.h"
 
+#include <iostream>
+
 TextBox::TextBox(std::string defaultText, Rectangle bounds) {
     mRect = bounds;
     mColor = WHITE;
     mBorderColor = BLACK;
     mBorderThickness = 1;
     mText = defaultText;
+    mActualHeight = bounds.height;
 }
 
 TextBox::~TextBox() {
@@ -15,20 +18,22 @@ void TextBox::update(float dt) {
 }
 
 void TextBox::draw() {
-    DrawRectangleRounded(mRect, mCornerRoundness, ROUNDED_SEGMENTS, mColor);
+    DrawRectangleRounded({mRect.x, mRect.y, mRect.width, mActualHeight},
+                         mCornerRoundness, ROUNDED_SEGMENTS, mColor);
     if (mBorderThickness != 0)
-        DrawRectangleRoundedLines(mRect, mCornerRoundness, ROUNDED_SEGMENTS,
-                                  mBorderThickness, mBorderColor);
+        DrawRectangleRoundedLines(
+            {mRect.x, mRect.y, mRect.width, mActualHeight}, mCornerRoundness,
+            ROUNDED_SEGMENTS, mBorderThickness, mBorderColor);
 
     int textSize = mTextSize;
     if (textSize == 0) {
         textSize = std::min(16.0f, mRect.height * 2 / 3); // Default text size
     }
     Rectangle textArea = mRect;
-    textArea.x += mTextSize / 3;
-    textArea.y += mTextSize / 3;
-    textArea.width -= 2 * mTextSize / 3;
-    textArea.height -= 2 * mTextSize / 3;
+    textArea.x += textSize / 3;
+    textArea.y += textSize / 3;
+    textArea.width -= 2 * textSize / 3;
+    // textArea.height -= 2 * textSize / 3;
 
     std::vector<std::string> textLines;
     textLines.push_back("");
@@ -79,15 +84,23 @@ void TextBox::draw() {
         }
     } while (iss);
 
-    BeginScissorMode(textArea.x, textArea.y, textArea.width, textArea.height);
-    float yOffset = textArea.y;
-    for (auto line : textLines) {
-        float startingX = textArea.x;
-        DrawTextEx(FontHolder::getInstance().get(FontID::Inter, textSize),
-                   line.c_str(), {startingX, yOffset}, textSize, 0, mTextColor);
-        yOffset += (float)textSize;
+    if (mIsShort) {
+        if (textLines.size()) {
+            DrawTextEx(FontHolder::getInstance().get(FontID::Inter, textSize),
+                       textLines[0].c_str(), {textArea.x, textArea.y}, textSize,
+                       0, mTextColor);
+        }
+    } else {
+        float yOffset = textArea.y;
+        for (auto line : textLines) {
+            float startingX = textArea.x;
+            DrawTextEx(FontHolder::getInstance().get(FontID::Inter, textSize),
+                       line.c_str(), {startingX, yOffset}, textSize, 0,
+                       mTextColor);
+            yOffset += (float)textSize;
+        }
+        mActualHeight = std::max(mRect.height, yOffset - mRect.y + 2 * textSize / 3); // Update the height in draw function, kinda meh but i cant help
     }
-    EndScissorMode();
 }
 
 void TextBox::setTextSize(int textSize) {
@@ -104,4 +117,12 @@ void TextBox::setText(std::string text) {
 
 std::string TextBox::getText() const {
     return mText;
+}
+
+void TextBox::makeShort() {
+    mIsShort = true;
+}
+
+float TextBox::getHeight() {
+    return mActualHeight;
 }

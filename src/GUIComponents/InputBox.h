@@ -19,7 +19,7 @@ public:
     typedef std::shared_ptr<InputBox> Ptr;
 
 public:
-    explicit InputBox(std::string defaultText, Rectangle bounds = {0, 0, 0, 0});
+    explicit InputBox(std::string defaultText = "", Rectangle bounds = {0, 0, 0, 0});
     ~InputBox();
 
     void reset();
@@ -32,6 +32,8 @@ public:
 
     void setTextSize(int textSize);
     void setCornerRoundness(float cornerRoundness);
+
+    void setPlaceHolder(const std::string &text);
 
     std::string getInputText() const;
 
@@ -52,6 +54,8 @@ private:
     std::string mInputText;
     Color mTextColor{BLACK};
     int mTextSize{0};
+
+    std::string mPlaceHolder;
 
     bool mIsFocused{false};
     int mIndexPos{0};
