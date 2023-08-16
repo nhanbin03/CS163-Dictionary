@@ -28,9 +28,7 @@ void WordInfo::draw() {
     wordText.setColor(BLANK);
     wordText.makeShort();
     wordText.draw();
-
-    std::cout << mReturnButton.getRect().x << " " << mReturnButton.getRect().y
-              << " " << mReturnButton.getRect().width << " "<< mReturnButton.getRect().height << "\n";
+    
     mReturnButton.draw();
 }
 
