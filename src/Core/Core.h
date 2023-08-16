@@ -100,6 +100,7 @@ private:
     std::string extractWord1(const std::string& input) ;
     std::string extractWord2(const std::string& input);
 
+    void ratingCleanUp();
     void equivalentFilter1(std::vector<Definition *>& defResults, const std::string &inputString);
     void equivalentFilter2(std::vector<Definition *> &defResults, const std::string &inputString);
 };

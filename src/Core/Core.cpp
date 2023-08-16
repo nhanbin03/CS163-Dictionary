@@ -168,6 +168,32 @@ std::vector<Core::Word*> Core::searchKeyword(const std::string& inputString) {
     return mWordSet.getPrefixMatches(inputString);
 }
 
+std::vector<Core::Word*> Core::searchDefinition(const std::string& inputString) {
+    std::string normalizedString = normalize(inputString);
+    std::vector<Definition*> defResults = mDefCollection;
+    equivalentFilter1(defResults, normalizedString);
+    equivalentFilter2(defResults, normalizedString);
+
+    std::vector<Word*> ret;
+    for (auto defPtr : defResults) {
+        if (defPtr->isDeleted()) continue;
+        bool isDuplicated = false;
+        for (auto wordPtr : ret) {
+            if (defPtr->word == wordPtr) {
+                isDuplicated = true;
+            }
+        }
+        if (!isDuplicated) {
+            ret.push_back(defPtr->word);
+        }
+        if (ret.size() == RESULT_LIMIT) {
+            break;
+        }
+    }
+
+    return ret;
+}
+
 Core::Word* Core::getRandomWord() {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -347,6 +373,60 @@ void Core::ratingCleanUp() {
     for (auto defPtr : mDefCollection) {
         defPtr->rating = 0;
     }
+}
+
+void Core::equivalentFilter1(std::vector<Definition*>& defResults,
+                             const std::string& inputString) {
+    ratingCleanUp();
+
+    for (auto wordStr : split(inputString, ' ')) {
+        DefWord* defWord;
+        if (mDefWordSet.getData(wordStr, defWord) == Trie<DefWord*>::StatusID::SUCCESS) {
+            for (auto defPtr : defWord->defs) {
+                if (!defPtr->isDeleted())
+                    defPtr->rating++;
+            }
+        }
+    }
+
+    sort(defResults.begin(), defResults.end(),
+         [](Definition* x, Definition* y) {
+             return x->rating > y->rating;
+         });
+
+    defResults.resize(RESULT_LIMIT * RESULT_LIMIT);
+
+    while (defResults.size() && defResults.back()->rating == 0) 
+        defResults.pop_back();
+}
+
+void Core::equivalentFilter2(std::vector<Definition*>& defResults,
+                             const std::string& inputString) {
+    ratingCleanUp();
+    
+    std::vector<std::string> inputList = split(inputString, ' ');
+    for (auto defPtr : defResults) {
+        if (defPtr->isDeleted()) continue;
+
+        std::vector<std::string> defList = split(defPtr->str, ' ');
+        
+        std::vector<std::vector<int>> dp(inputList.size() + 1, std::vector<int>(defList.size() + 1, 0));
+
+        for (int i = 1; i <= inputList.size(); i++) {
+            for (int j = 1; j <= defList.size(); j++) {
+                dp[i][j] = std::max(dp[i - 1][j], dp[i][j - 1]);
+                if (inputList[i - 1] == defList[j - 1])
+                    dp[i][j] = std::max(dp[i][j], dp[i - 1][j - 1] + 1);
+            }
+        }
+
+        defPtr->rating = dp[inputList.size()][defList.size()];
+    }
+
+    sort(defResults.begin(), defResults.end(),
+         [](Definition* x, Definition* y) {
+             return x->rating > y->rating;
+         });
 }
 
 std::string Core:: extractSecondWord(const std::string& input) {
