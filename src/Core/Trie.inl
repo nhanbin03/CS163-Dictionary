@@ -31,10 +31,10 @@ Trie<Data>::~Trie() {
 template <class Data>
 typename Trie<Data>::StatusID Trie<Data>::insert(const Data& newData) {
     std::string word = newData->str;
-    Node* cur = mRoot;
-    if (cur == nullptr) {
-        cur = new Node(Data(), mNumChild);
+    if (mRoot == nullptr) {
+        mRoot = new Node(Data(), mNumChild);
     }
+    Node* cur = mRoot;
     for (int i = 0; i < word.size(); i++) {
         int index = mMapping[word[i]];
         if (cur->child[index] == nullptr) {
@@ -81,8 +81,9 @@ template <class Data>
 std::vector<Data> Trie<Data>::getPrefixMatches(const std::string& keyword) {
     std::vector<Data> results;
     Data returnedData;
-    Node* cur;
-    if (Trie<Data>::getData(keyword, returnedData, cur) == StatusID::SUCCESS) {
+    Node* cur = nullptr;
+    Trie<Data>::getData(keyword, returnedData, cur);
+    if (cur != nullptr) {
         Trie<Data>::getResults(cur, results);
     }
     return results;
@@ -114,7 +115,6 @@ typename Trie<Data>::StatusID Trie<Data>::getData(const std::string& keyword,
     Node* cur = mRoot;
     if (cur == nullptr)
         return StatusID::NOT_FOUND;
-
     for (int i = 0; i < keyword.size(); i++) {
         int index = mMapping[keyword[i]];
         if (cur->child[index] == nullptr)
@@ -122,10 +122,10 @@ typename Trie<Data>::StatusID Trie<Data>::getData(const std::string& keyword,
         cur = cur->child[index];
     }
 
+    returnedData = cur->data;
+    returnedNode = cur;
     if (cur->isEmpty == true)
         return StatusID::NOT_FOUND;
 
-    returnedData = cur->data;
-    returnedNode = cur;
     return StatusID::SUCCESS;
 }

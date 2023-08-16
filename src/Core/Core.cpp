@@ -2,25 +2,50 @@
 #include "algorithm"
 #include "../Helper.h"
 
+#include <cassert>
+
 Core::Word::Word(const std::string& str)
-: str(normalize(str)) {
+: orgStr(str), str(convertToNonAccentVN(str)) {
+}
+
+bool Core::Word::isDeleted() {
+    return str == "";
 }
 
 Core::Definition::Definition(const std::string& str)
-: str(str) {
+: orgStr(str), str(normalize(str)) {
+    rating = 0;
+}
+
+bool Core::Definition::isDeleted() {
+    return str == "";
 }
 
 Core::DefWord::DefWord(const std::string& str)
-: str(normalize(str)) {
+: str(str) {
 }
 
-Core::Core(const std::string& specifier, const std::string& charSet)
+Core::Core(const std::string& specifier, const std::string& wordCharSet,
+           const std::string defCharSet)
 : mDataSpecifier(specifier)
-, mWordSet(charSet)
-, mDefWordSet(charSet) {
+, mWordSet(wordCharSet)
+, mDefWordSet(defCharSet) {
+    std::cout << "Loading " <<  mDataSpecifier << "...\n";
+    loadFromFile();
 }
 
 Core::~Core() {
+    saveToFile();
+
+    for (auto ptr : mWordCollection) {
+        delete ptr;
+    }
+    for (auto ptr : mDefCollection) {
+        delete ptr;
+    }
+    for (auto ptr : mDefWordCollection) {
+        delete ptr;
+    }
 }
 
 void Core::updateHistory(Word *word) {
@@ -40,7 +65,7 @@ void Core::updateHistory(Word *word) {
             mHistory.insert(mHistory.begin(), word);
         } else {
             if (mHistory.size() >= RESULT_LIMIT) {
-                mHistory.erase(mHistory.end());
+                mHistory.pop_back();
             }
             mHistory.insert(mHistory.begin(), word);
         }
@@ -53,20 +78,11 @@ std::vector<Core::Word *> Core::getHistory() {
 
 void Core::removeWord(Word *word) {
     if (word != nullptr) {
-        for (int i = 0; i < mHistory.size(); i++) {
-            if (mHistory[i] == word) {
-                mHistory.erase(mHistory.begin() + i);
-                break;
-            }
-        }
         mWordSet.remove(word->str);
         for (int i = 0; i < word->defs.size(); i++) {
-            auto iter = std::find(mDefCollection.begin(), mDefCollection.end(),
-                               word->defs[i]);
-            mDefCollection.erase(iter);
-            delete word->defs[i];
+            word->defs[i]->str = "";
         }
-        delete word;
+        word->str = "";
     }
 }
 
@@ -93,26 +109,63 @@ bool Core::isFavorite(Word* word) {
 }
 
 void Core::saveToFile() {
-    
-    std::string filePath = "data/local/" + mDataSpecifier + "/data.txt";
-    std::ofstream outputFile(filePath);
+    // Save to local
+    std::string localFilePath = "data/local/" + mDataSpecifier + "/data.txt";
+    std::ofstream localOutputFile(localFilePath);
 
-    if (outputFile.is_open()) {
+    if (localOutputFile.is_open()) {
         for (Word* word : mWordCollection) {
-            for (Definition* def : word->defs) {
-                outputFile << word->str << "\t" << def->str << std::endl;
+            assert(word != nullptr);
+            if (!word->isDeleted()) {
+                for (Definition* def : word->defs) {
+                    assert(def != nullptr);
+                    if (!def->isDeleted()) {
+                        localOutputFile << word->orgStr << "\t" << def->orgStr << std::endl;
+                    }
+                }
             }
         }
-        outputFile.close();
-        std::cout << "Data saved to " << filePath << std::endl;
+        localOutputFile.close();
+        std::cout << "Data saved to " << localFilePath << std::endl;
     } else {
         std::cout << "Error: Unable to open file for writing." << std::endl;
     }
-    
+
+    // Save to favorite
+    std::string favoriteFilePath = "data/favorite/" + mDataSpecifier + "/data.txt";
+    std::ofstream favoriteOutputFile(favoriteFilePath);
+
+    if (favoriteOutputFile.is_open()) {
+        for (Word* word : getFavoriteList()) {
+            if (!word->isDeleted()) {
+                favoriteOutputFile << word->orgStr << "\n";
+            }
+        }
+        favoriteOutputFile.close();
+        std::cout << "Data saved to " << favoriteFilePath << std::endl;
+    } else {
+        std::cout << "Error: Unable to open file for writing." << std::endl;
+    }
+
+    // Save to history
+    std::string historyFilePath = "data/history/" + mDataSpecifier + "/data.txt";
+    std::ofstream historyOutputFile(historyFilePath);
+
+    if (historyOutputFile.is_open()) {
+        for (Word* word : mHistory) {
+            if (!word->isDeleted()) {
+                historyOutputFile << word->orgStr << "\n";
+            }
+        }
+        historyOutputFile.close();
+        std::cout << "Data saved to " << historyFilePath << std::endl;
+    } else {
+        std::cout << "Error: Unable to open file for writing." << std::endl;
+    }
 }
 
 std::vector<Core::Word*> Core::searchKeyword(const std::string& inputString) {
-    return mWordSet.getPrefixMatches(normalize(inputString));
+    return mWordSet.getPrefixMatches(inputString);
 }
 
 Core::Word* Core::getRandomWord() {
@@ -137,7 +190,7 @@ std::pair<Core::Word*, std::array<Core::Definition*, 5>> Core::getWordQuiz() {
     // Get the other 4 random definitions. One of them is the answer.
     std::uniform_int_distribution<> dist1(1, 4);
     randomIndex = dist1(gen);
-    choices[randomIndex] = question->defs[randomIndex];
+    choices[randomIndex] = choices[0];
     for (int i = 1; i < 5; i++) {
         if (i != randomIndex) {
             Word* randomWord = getRandomWord();
@@ -183,7 +236,26 @@ Core::getDefinitionQuiz() {
         question, std::array<Word*, 5>{choices[0], choices[1], choices[2],
                                        choices[3], choices[4]});
 }
-std:: string Core::extractFirstWord(const std::string& input) {
+
+void Core::resetDefault() {
+    std::string dataPath = "data/dictionary-data/" + mDataSpecifier;
+
+    mWordSet.clear();
+    mDefWordSet.clear();
+    for (auto ptr : mWordCollection) {
+        delete ptr;
+    }
+    mWordCollection.clear();
+    for (auto ptr: mDefCollection) {
+        delete ptr;
+    }
+    mDefCollection.clear();
+
+    mHistory.clear();
+    loadWordLocal(dataPath);
+}
+
+std::string Core::extractFirstWord(const std::string& input) {
     std::string firstWord;
     size_t pos = input.find('\t');
     if (pos != std::string::npos) {
@@ -204,26 +276,26 @@ void Core:: loadDataFromSpecifier(const std::string& mdataspecifier, std::vector
 
     std::string line;
     while (std::getline(file, line)) {
-    words.push_back( extractFirstWord(line));
-    
+        words.push_back( extractFirstWord(line));
     }
 
     file.close();
-for( int i=0;i<words.size();i++)
-{
-    Word* myWord;
-    if (mWordSet.getData(words[i],myWord)==Trie<Word*>::StatusID::SUCCESS) 
-   addFavorite(myWord);
-else // thong bao loi 
-std:: cout<<"error";
-}
+    for( int i=0;i<words.size();i++)
+    {
+        Word* myWord;
+        if (mWordSet.getData(words[i], myWord)
+            == Trie<Word*>::StatusID::SUCCESS)
+            addFavorite(myWord);
+        else // thong bao loi
+            std::cout << "Error: Cannot find favorite word\n";
+    }
 
 }
 
 std::vector<Core::Word*> Core::getFavoriteList() {
     std::vector<Word*> favoriteList;
     for (Word* word : mWordCollection) {
-        if (word->IsFavorite) {
+        if (!word->isDeleted() && word->IsFavorite) {
             favoriteList.push_back(word);
         }
     }
@@ -240,10 +312,11 @@ void Core::loadDataFromHistory(const std::string& mdataspecifier2 )
 
     std::string line;
     while (std::getline(file, line)) 
-	{   Word* myWord;
-        if (mWordSet.getData(extractFirstWord(line),myWord)==Trie<Word*>::StatusID::SUCCESS) 
-    mHistory.push_back( myWord);
-    
+	{   
+        Word* myWord;
+        if (mWordSet.getData(line,myWord)==Trie<Word*>::StatusID::SUCCESS) 
+            mHistory.push_back(myWord);
+
     }
 
     file.close();
@@ -269,6 +342,13 @@ std::string Core:: extractWord2(const std::string& input) {
     
     return secondWord;
 }
+
+void Core::ratingCleanUp() {
+    for (auto defPtr : mDefCollection) {
+        defPtr->rating = 0;
+    }
+}
+
 std::string Core:: extractSecondWord(const std::string& input) {
     std::string secondWord;
     size_t pos = input.find('\t');
@@ -279,6 +359,7 @@ std::string Core:: extractSecondWord(const std::string& input) {
     
     return secondWord;
 }
+
 void Core::loadWordLocal(const std::string& mdataspecifier3) {
     std::string dataFilePath = mdataspecifier3 + "/data.txt";//duong dan local
     std::ifstream file(dataFilePath);
@@ -286,47 +367,24 @@ void Core::loadWordLocal(const std::string& mdataspecifier3) {
         std::cerr << "Error opening file: " << dataFilePath << std::endl;
         return;
     }
-
     std::string line;
+    int i = 0;
     while (std::getline(file, line)) {
         std::string s = extractFirstWord(line);
-        
-        Word* myWord ;
-         if (mWordSet.getData(s,myWord)==Trie<Word*>::StatusID::NOT_FOUND)
-		{Word* a=new Word (s);
-        mWordCollection.push_back(a);
-          mWordSet.insert(a);
-        }
-    }
-
-    file.close();
-}
-void Core::loadDefWordLocal(const std::string& mdataspecifier4) {
-    std::string dataFilePath = mdataspecifier4 + "/data.txt";
-    std::ifstream file(dataFilePath);
-    if (!file.is_open()) {
-        std::cerr << "Error opening file: " << dataFilePath << std::endl;
-        return;
-    }
-
-    std::string line;
-    while (std::getline(file, line)) {
-        std::string s = extractSecondWord(line);
-        normalize(s);
-        std:: string TheWord = extractFirstWord(line);
-        Word* k = new Word(TheWord);
-        Definition* i= addDefinition(s, k);
-        // mDefCollection.push_back(i);
-        // Nguyen cai dong while duoi nay lap voi cai check trong ham addDefinition a, doan nay dua xuong duoi kia la ok roi
-        while (!line.empty()) {
-            DefWord* myDefWord;
-            if (mDefWordSet.getData(extractWord1(line), myDefWord) == Trie<DefWord*>::StatusID::NOT_FOUND) {
-                DefWord * a = new DefWord(s);
-                
-                mDefWordSet.insert( a);
-            }
-            line = extractWord2(line);
-        }
+        Word* myWord;
+        i++;
+        // if (mDataSpecifier == "engvie" && i > 67000)
+        //     std::cout << i << " " << s << "\n";
+        Word* a = new Word(s);
+        if (mWordSet.getData(a->str,myWord)==Trie<Word*>::StatusID::NOT_FOUND)
+		{
+            mWordCollection.push_back(a);
+            mWordSet.insert(a);
+            std::string s = extractSecondWord(line);
+            addDefinition(s, a);
+         } else {
+            delete a;
+         }
     }
 
     file.close();
@@ -336,53 +394,47 @@ Core::Word* Core::addWord(std::string wordString){
     Word* newword = new Word(wordString);
     if (mWordSet.insert(newword) == Trie<Word*>::StatusID::SUCCESS){
         mWordCollection.push_back(newword);
+    } else {
+        delete newword;
+        newword = nullptr;
     }
-    // if (Trie<Word*>::insert(newword) == Trie<Word*>::StatusID::DUPLICATED){
-    //     return mWordCollection[std::find(mWordCollection.begin(), mWordCollection.end(), newword)];
-    // }
     return newword;
 }
 
 Core::Definition* Core::addDefinition(std::string defString, Word *word){
     Definition* newDef = new Definition(defString);
     newDef->word = word;
-    bool check = true;
-    for (int i = 0; i < word->defs.size(); i++){
-        if (word->defs[i]->str == defString){
-            check = false;
-            break;
+    /* This is not necessary, and it wastes a lot of time */
+    // bool check = true;
+    // for (int i = 0; i < word->defs.size(); i++){
+    //     if (word->defs[i]->str == defString){
+    //         check = false;
+    //         break;
+    //     }
+    // }
+    // if (check){
+    word->defs.push_back(newDef);
+    mDefCollection.push_back(newDef);
+
+    for (auto defWordStr : split(newDef->str, ' ')) {
+        DefWord* myDefWord;
+        if (defWordStr.size() <= 2) continue;
+        if (mDefWordSet.getData(defWordStr, myDefWord) == Trie<DefWord*>::StatusID::NOT_FOUND) {
+            myDefWord = new DefWord(defWordStr);
+            mDefWordCollection.push_back(myDefWord);
+            mDefWordSet.insert(myDefWord);
         }
+        myDefWord->defs.push_back(newDef);
     }
-    if (check){
-        word->defs.push_back(newDef);
-        mDefCollection.push_back(newDef);
-        
-        while (!defString.empty()) {
-            DefWord* myDefWord;
-            if (mDefWordSet.getData(extractWord1(defString), myDefWord) == Trie<DefWord*>::StatusID::NOT_FOUND) {
-                DefWord* a = new DefWord(defString);
-                
-                mDefWordSet.insert(a);
-            }
-            defString = extractWord2(defString);
-        }
-    }
+    // }
     return newDef;
 }
 
 void Core::editDefinition(Core::Definition *def, const std::string &newDef){
-    std::string defString = def->str;
-    while (!defString.empty()) {    
-        mDefWordSet.remove(extractWord1(defString));
-        defString = extractWord2(defString);
-    }
-    def->word->defs.erase(std::find(def->word->defs.begin(), def->word->defs.end(), def));
-    std::string s = extractSecondWord(newDef);
-    normalize(s);
-    std:: string TheWord = extractFirstWord(newDef);
-    Word* k = new Word(TheWord);
-    Definition* editDef= addDefinition(s, k);
+    def->str = "";
+    addDefinition(newDef, def->word);
 }
+
 void Core:: loadFromFile()
  {   
     std::vector<std::string> words;
@@ -390,7 +442,9 @@ void Core:: loadFromFile()
     std::string localPath = "data/local/" + mDataSpecifier;
     std::string historyPath = "data/history/" + mDataSpecifier;
     loadWordLocal(localPath);
-    loadDefWordLocal(localPath); 
+    std::cout << "Done loading local\n";
     loadDataFromSpecifier(favoritePath,  words);
-    loadDataFromHistory(historyPath) ;
+    std::cout << "Done loading favorite\n";
+    loadDataFromHistory(historyPath);
+    std::cout << "Done loading history\n";
  }
