@@ -462,9 +462,11 @@ void Core::loadWordLocal(const std::string& mdataspecifier3) {
             mWordSet.insert(a);
             std::string s = extractSecondWord(line);
             addDefinition(s, a);
-         } else {
+        } else {
+            std::string s = extractSecondWord(line);
+            addDefinition(s, myWord);
             delete a;
-         }
+        }
     }
 
     file.close();
