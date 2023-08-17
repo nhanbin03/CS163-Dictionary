@@ -12,6 +12,8 @@ public:
     static Dictionary& getInstance();
 
     Core& getDict();
+    
+    void setDict(int index);
 
 private:
     Dictionary();
@@ -20,7 +22,7 @@ private:
     ~Dictionary();
 
 private:
-    Core& mCurDict;
+    Core* mCurDict;
 };
 
 #endif // CORE_DICTIONARY_H
