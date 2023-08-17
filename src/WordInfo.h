@@ -29,6 +29,12 @@ private:
     Rectangle mRect;
 
     Button mReturnButton;
+
+    int mPositionY{0};
+
+private:
+    void drawDefinitions();
+
 };
 
 
