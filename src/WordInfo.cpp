@@ -21,7 +21,7 @@ void WordInfo::update(float dt) {
 
     mPositionY += (GetMouseWheelMove() * 20);
 
-    if (mPositionY < 0) {
+    if (mPositionY > 0) {
         mPositionY = 0;
     }
 
