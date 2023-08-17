@@ -52,6 +52,7 @@ void WordInfo::setRect(Rectangle rect) {
 
 void WordInfo::setWord(Core::Word* word) {
     mWord = word;
+    mPositionY = 0;
 }
 
 bool WordInfo::isActivated() {
