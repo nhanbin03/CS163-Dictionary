@@ -7,8 +7,10 @@
 
 SearchState::SearchState(StateStack &stack, Context context)
 : State(stack, context)
-, mDict(Dictionary::CORE[0])
+, mDict(Dictionary::getInstance().getDict())
 , mScrollList(mWordList, mDict) {
+    mNavBar.setCurNav(NavBar::NavID::Search);
+
     // Search bar
     mSearchBar.setRect({334, 99, 499, 40});
     mSearchBar.setPlaceHolder("Type Something...");
@@ -67,6 +69,7 @@ bool SearchState::update(float dt) {
     mSearchBar.update(dt);
     mSearchButton.update(dt);
     mModeButton.update(dt);
+    mNavBar.update(dt);
     return true;
 }
 
@@ -76,6 +79,7 @@ void SearchState::draw() {
     mSearchBar.draw();
     mSearchButton.draw();
     mModeButton.draw();
+    mNavBar.draw();
     // WordInfo word(mDict.getRandomWord(), mDict); word.setRect({293, 163, 731, 477}); word.draw();
     DrawLineEx({341, 163}, {982, 163}, 1, AppColor::TEXT);
 }

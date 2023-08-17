@@ -5,7 +5,11 @@ enum class TextureID {
     None,
     DefinitionSwitch,
     KeywordSwitch,
-    Return
+    Return,
+    DatasetSwitch,
+    SearchNav,
+    FavoriteNav,
+    GameNav
 };
 
 enum class FontID {

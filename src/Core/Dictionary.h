@@ -11,11 +11,16 @@ public:
 public:
     static Dictionary& getInstance();
 
+    Core& getDict();
+
 private:
     Dictionary();
     Dictionary(Dictionary const&) = delete;
     void operator= (Dictionary const&) = delete;
     ~Dictionary();
+
+private:
+    Core& mCurDict;
 };
 
 #endif // CORE_DICTIONARY_H

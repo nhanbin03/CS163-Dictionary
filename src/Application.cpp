@@ -58,6 +58,14 @@ void Application::loadTextures() {
                                       BASE_PATH + "KeywordSwitch.png");
     TextureHolder::getInstance().load(TextureID::Return,
                                       BASE_PATH + "Return.png");
+    TextureHolder::getInstance().load(TextureID::DatasetSwitch,
+                                      BASE_PATH + "DatasetSwitch.png");
+    TextureHolder::getInstance().load(TextureID::SearchNav,
+                                      BASE_PATH + "SearchNav.png");
+    TextureHolder::getInstance().load(TextureID::FavoriteNav,
+                                      BASE_PATH + "FavoriteNav.png");
+    TextureHolder::getInstance().load(TextureID::GameNav,
+                                      BASE_PATH + "GameNav.png");
 }
 
 void Application::loadFonts() {

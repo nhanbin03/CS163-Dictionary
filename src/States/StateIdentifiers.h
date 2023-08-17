@@ -4,6 +4,8 @@
 enum class StateIDs {
     None,
     Search,
+    Favorite,
+    Game
 };
 
 #endif // STATES_STATEIDENTIFIERS_H
