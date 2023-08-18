@@ -33,7 +33,6 @@ Core& Dictionary::getDict() {
 
 void Dictionary::setDict(int index) {
     mCurDict = &CORE[index];
-    std::cout << mCurDict->getDataName() << "\n";
 }
 
 Dictionary::Dictionary()
