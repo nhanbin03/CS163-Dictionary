@@ -60,6 +60,8 @@ void Button::draw() {
                                   mBorderThickness, colorFilter(mBorderColor));
     }
 
+    if (mHasTexture)
+        DrawTextureV(mTexture, getPosition(), colorFilter(mContentColor));
     if (mTextSize == 0) {
         mTextSize = mRect.height / 2;
     }
@@ -71,8 +73,6 @@ void Button::draw() {
                 mRect.y + mRect.height / 2 - textBounds.y / 2},
                mTextSize, 0, colorFilter(mContentColor));
 
-    if (mHasTexture)
-        DrawTextureV(mTexture, getPosition(), colorFilter(mContentColor));
 }
 
 void Button::setSize(Vector2 size) {
