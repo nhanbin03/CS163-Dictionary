@@ -19,7 +19,8 @@ public:
     typedef std::shared_ptr<InputBox> Ptr;
 
 public:
-    explicit InputBox(std::string defaultText = "", Rectangle bounds = {0, 0, 0, 0});
+    explicit InputBox(std::string defaultText = "",
+                      Rectangle bounds = {0, 0, 0, 0});
     ~InputBox();
 
     void reset();
@@ -36,6 +37,11 @@ public:
     void setPlaceHolder(const std::string &text);
 
     std::string getInputText() const;
+
+    float getHeight();
+
+    void activateClickability();
+    void deactivateClickability();
 
 public:
     static std::function<bool(std::string)> integerValidator(int min, int max);
@@ -64,6 +70,10 @@ private:
     float mCornerRoundness{0.5};
 
     bool mIsWrapped{false};
+
+    float mActualHeight;
+
+    bool mClickable{true};
 };
 
 #endif // GUICOMPONENTS_INPUTBOX_H

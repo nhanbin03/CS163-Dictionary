@@ -9,6 +9,7 @@ InputBox::InputBox(std::string defaultText, Rectangle bounds) {
     mBorderThickness = 1;
     mInputText = defaultText;
     mIndexPos = defaultText.size();
+    mActualHeight = bounds.height;
 }
 
 InputBox::~InputBox() {
@@ -48,10 +49,12 @@ void InputBox::update(float dt) {
 }
 
 void InputBox::draw() {
-    DrawRectangleRounded(mRect, mCornerRoundness, ROUNDED_SEGMENTS, mColor);
+    DrawRectangleRounded({mRect.x, mRect.y, mRect.width, mActualHeight},
+                         mCornerRoundness, ROUNDED_SEGMENTS, mColor);
     if (mBorderThickness != 0)
-        DrawRectangleRoundedLines(mRect, mCornerRoundness, ROUNDED_SEGMENTS,
-                                  mBorderThickness, mBorderColor);
+        DrawRectangleRoundedLines(
+            {mRect.x, mRect.y, mRect.width, mActualHeight}, mCornerRoundness,
+            ROUNDED_SEGMENTS, mBorderThickness, mBorderColor);
     if (mIsWrapped) {
         drawTextWrapped();
     } else {
@@ -83,6 +86,18 @@ std::string InputBox::getInputText() const {
     return mInputText;
 }
 
+float InputBox::getHeight() {
+    return mActualHeight;
+}
+
+void InputBox::activateClickability() {
+    mClickable = true;
+}
+
+void InputBox::deactivateClickability() {
+    mClickable = false;
+}
+
 std::function<bool(std::string)> InputBox::integerValidator(int min, int max) {
     return [min, max](std::string str) -> bool {
         if (!std::regex_match(str, std::regex("[0-9]+"))) {
@@ -104,7 +119,11 @@ InputBox::integerSpaceSeparatedListValidator() {
 void InputBox::checkInteraction() {
     Vector2 mousePoint = GetMousePosition();
 
-    if (CheckCollisionPointRec(mousePoint, mRect)) {
+    if (mClickable
+        && CheckCollisionPointRec(
+            mousePoint,
+            (mIsWrapped ? (Rectangle){mRect.x, mRect.y, mRect.width, mActualHeight} :
+                          mRect))) {
         SetMouseCursor(MOUSE_CURSOR_IBEAM);
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             mIsFocused = true;
@@ -215,7 +234,6 @@ void InputBox::drawTextWrapped() {
         }
     } while (iss);
 
-    BeginScissorMode(textArea.x, textArea.y, textArea.width, textArea.height);
     float yOffset = textArea.y;
     for (auto line : textLines) {
         float startingX = textArea.x;
@@ -223,7 +241,11 @@ void InputBox::drawTextWrapped() {
                    line.c_str(), {startingX, yOffset}, textSize, 0, mTextColor);
         yOffset += (float)textSize;
     }
-    EndScissorMode();
+    mActualHeight =
+        std::max(mRect.height,
+                 yOffset - mRect.y
+                     + 2 * textSize / 3); // Update the height in draw function,
+                                          // kinda meh but i cant help
 }
 
 void InputBox::drawCursorIndicator(float x, float y1, float y2) {
