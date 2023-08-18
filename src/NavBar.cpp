@@ -7,7 +7,7 @@ NavBar::NavBar() {
     mRect = {0, 0, 299, 640};
     mColor = AppColor::BACKGROUND_2;
 
-    mDatasetSwitch.setRect({26, 19, 246, 61});
+    mDatasetSwitch.setRect({23, 19, 252, 67});
     mDatasetSwitch.setBorderThickness(0);
     mDatasetSwitch.setColor(BLANK);
     mDatasetSwitch.setTexture(
@@ -24,11 +24,15 @@ NavBar::NavBar() {
         button.setRect({26, (float)96 + i * 61, 246, 61});
         button.setColor(AppColor::BACKGROUND_1);
         button.setContentColor(AppColor::TEXT);
-        button.setCallback([i]() {
+        button.setCallback([this, i]() {
             Dictionary::getInstance().setDict(i);
+            this->mDatasetSelectorHidden = true;
         });
         mDatasetOptions.push_back(std::move(button));
     }
+
+    mOptionPanel = TextureHolder::getInstance().get(TextureID::OptionPanel);
+    scaleTexture(mOptionPanel, {252, 341});
 }
 
 void NavBar::update(float dt) {
@@ -48,7 +52,7 @@ void NavBar::draw() {
     DrawRectangleRec(mRect, mColor);
     mDatasetSwitch.draw();
     TextBox dataName(Dictionary::getInstance().getDict().getDataName(),
-                     {58, 20, 200, 61});
+                     {58, 25, 200, 61});
     dataName.setColor(BLANK);
     dataName.setBorderColor(BLANK);
     dataName.setTextSize(31);
@@ -63,9 +67,10 @@ void NavBar::draw() {
         }
     }
     if (!mDatasetSelectorHidden) {
-        DrawRectangleRounded(
-            {26, 81, 246, (float)30 + 61 * mDatasetOptions.size()}, 0.122,
-            GUIComponent::ROUNDED_SEGMENTS, AppColor::BACKGROUND_1);
+        DrawTexture(mOptionPanel, 23, 81, WHITE);
+        // DrawRectangleRounded(
+        //     {26, 81, 246, (float)30 + 61 * mDatasetOptions.size()}, 0.122,
+        //     GUIComponent::ROUNDED_SEGMENTS, AppColor::BACKGROUND_1);
         for (auto& button : mDatasetOptions) {
             button.draw();
         }

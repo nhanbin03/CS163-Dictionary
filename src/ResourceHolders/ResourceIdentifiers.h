@@ -9,7 +9,8 @@ enum class TextureID {
     DatasetSwitch,
     SearchNav,
     FavoriteNav,
-    GameNav
+    GameNav,
+    OptionPanel
 };
 
 enum class FontID {

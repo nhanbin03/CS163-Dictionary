@@ -5,6 +5,7 @@
 #include "GUIComponents/Button.h"
 #include "GUIComponents/GUIComponent.h"
 #include "GUIComponents/TextBox.h"
+#include "GUIComponents/GUIComponentHelper.h"
 
 #include "raylib.h"
 
@@ -37,6 +38,8 @@ private:
 
     bool mDatasetSelectorHidden{true};
     std::vector<Button> mDatasetOptions;
+
+    Texture2D mOptionPanel;
 };
 
 #endif // NAVBAR_H

@@ -66,6 +66,8 @@ void Application::loadTextures() {
                                       BASE_PATH + "FavoriteNav.png");
     TextureHolder::getInstance().load(TextureID::GameNav,
                                       BASE_PATH + "GameNav.png");
+    TextureHolder::getInstance().load(TextureID::OptionPanel,
+                                      BASE_PATH + "OptionPanel.png");
 }
 
 void Application::loadFonts() {
