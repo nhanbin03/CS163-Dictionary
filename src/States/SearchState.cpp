@@ -11,7 +11,7 @@ SearchState::SearchState(StateStack &stack, Context context)
     mNavBar.setCurNav(NavBar::NavID::Search);
 
     // Search bar
-    mSearchBar.setRect({334, 99, 499, 40});
+    mSearchBar.setRect({334, 99, 456, 40});
     mSearchBar.setPlaceHolder("Type Something...");
     mSearchBar.setTextSize(24);
     mSearchBar.setBorderColor(BLANK);
@@ -58,16 +58,16 @@ SearchState::SearchState(StateStack &stack, Context context)
         }
     });
 
-    mWordList = Dictionary::getInstance().getDict().searchKeyword(".");
+    mWordList = Dictionary::getInstance().getDict().searchKeyword("a b");
 }
 
 SearchState::~SearchState() {
 }
 
 bool SearchState::update(float dt) {
-    mScrollList.update(dt);
     mSearchBar.update(dt);
     mSearchButton.update(dt);
+    mScrollList.update(dt);
     mModeButton.update(dt);
     mNavBar.update(dt);
     return true;

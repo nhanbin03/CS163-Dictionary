@@ -4,11 +4,11 @@
 #include "Core/Core.h"
 #include "GUIComponents/Button.h"
 #include "GUIComponents/TextBox.h"
+#include "GUIComponents/InputBox.h"
 
 #include "raylib.h"
 
-class WordInfo
-{
+class WordInfo {
 public:
     WordInfo();
     ~WordInfo();
@@ -30,6 +30,10 @@ private:
     Button mReturnButton;
 
     int mPositionY{0};
+
+    bool mEditMode{false};
+    std::vector<InputBox::Ptr> mDefEdittors;
+    Button mAddDefBtn;
 
 private:
     void drawDefinitions();
