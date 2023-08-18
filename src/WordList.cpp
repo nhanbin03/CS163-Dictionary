@@ -1,8 +1,7 @@
 #include "WordList.h"
 
-WordList::WordList(const std::vector<Core::Word*>& list, Core& dict)
-: mList(list)
-, mInfoPage(dict) {
+WordList::WordList(const std::vector<Core::Word*>& list)
+: mList(list) {
     mRowHeight = 65;
     for (int i = 0; i < mList.size(); i++) {
         createNewButton();

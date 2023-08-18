@@ -10,7 +10,7 @@
 
 class WordList {
 public:
-    WordList(const std::vector<Core::Word *> &list, Core& dict);
+    WordList(const std::vector<Core::Word *> &list);
     ~WordList();
 
     void update(float dt);

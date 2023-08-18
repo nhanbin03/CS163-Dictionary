@@ -19,8 +19,6 @@ public:
     void draw();
 
 private:
-    Core& mDict;
-
     std::vector<Core::Word*> mWordList;
 
     bool mIsDefinitionSearch;

@@ -7,8 +7,7 @@
 
 SearchState::SearchState(StateStack &stack, Context context)
 : State(stack, context)
-, mDict(Dictionary::getInstance().getDict())
-, mScrollList(mWordList, mDict) {
+, mScrollList(mWordList) {
     mNavBar.setCurNav(NavBar::NavID::Search);
 
     // Search bar
@@ -27,10 +26,11 @@ SearchState::SearchState(StateStack &stack, Context context)
     mSearchButton.setCallback([this]() {
         if (this->mIsDefinitionSearch) {
             this->mWordList =
-                this->mDict.searchDefinition(this->mSearchBar.getInputText());
+                Dictionary::getInstance().getDict().searchDefinition(
+                    this->mSearchBar.getInputText());
         } else {
-            this->mWordList =
-                this->mDict.searchKeyword(this->mSearchBar.getInputText());
+            this->mWordList = Dictionary::getInstance().getDict().searchKeyword(
+                this->mSearchBar.getInputText());
         }
         if (this->mWordList.size() > Core::RESULT_LIMIT)
             this->mWordList.resize(Core::RESULT_LIMIT);
@@ -58,7 +58,7 @@ SearchState::SearchState(StateStack &stack, Context context)
         }
     });
 
-    mWordList = mDict.searchKeyword(".");
+    mWordList = Dictionary::getInstance().getDict().searchKeyword(".");
 }
 
 SearchState::~SearchState() {
@@ -80,6 +80,5 @@ void SearchState::draw() {
     mSearchButton.draw();
     mModeButton.draw();
     mNavBar.draw();
-    // WordInfo word(mDict.getRandomWord(), mDict); word.setRect({293, 163, 731, 477}); word.draw();
     DrawLineEx({341, 163}, {982, 163}, 1, AppColor::TEXT);
 }

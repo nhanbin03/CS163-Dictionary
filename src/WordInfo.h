@@ -10,7 +10,7 @@
 class WordInfo
 {
 public:
-    WordInfo(Core& dict);
+    WordInfo();
     ~WordInfo();
 
     void update(float dt);
@@ -23,7 +23,6 @@ public:
     bool isActivated();
 
 private:
-    Core& mDict;
     Core::Word* mWord{nullptr};
 
     Rectangle mRect;

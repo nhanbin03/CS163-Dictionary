@@ -1,7 +1,6 @@
 #include "WordInfo.h"
 
-WordInfo::WordInfo(Core& dict)
-: mDict(dict) {
+WordInfo::WordInfo() {
     mReturnButton.setRect({341, 532, 75, 75});
     mReturnButton.setBorderThickness(0);
     mReturnButton.setColor(BLANK);
