@@ -10,20 +10,49 @@ NavBar::NavBar() {
     mDatasetSwitch.setRect({26, 19, 246, 61});
     mDatasetSwitch.setBorderThickness(0);
     mDatasetSwitch.setColor(BLANK);
-    mDatasetSwitch.setTexture(TextureHolder::getInstance().get(TextureID::DatasetSwitch));
+    mDatasetSwitch.setTexture(
+        TextureHolder::getInstance().get(TextureID::DatasetSwitch));
+    mDatasetSwitch.setCallback([this]() {
+        this->mDatasetSelectorHidden ^= 1;
+    });
 
+    for (int i = 0; i < 5; i++) {
+        Button button;
+        button.setCornerRoundness(0);
+        button.setBorderThickness(0);
+        button.setText(Dictionary::CORE[i].getDataName());
+        button.setRect({26, (float)96 + i * 61, 246, 61});
+        button.setColor(AppColor::BACKGROUND_1);
+        button.setContentColor(AppColor::TEXT);
+        button.setCallback([i]() {
+            Dictionary::getInstance().setDict(i);
+        });
+        mDatasetOptions.push_back(std::move(button));
+    }
 }
 
 void NavBar::update(float dt) {
     mDatasetSwitch.update(dt);
     for (auto& p : mNavButtons) {
-        p.second.update(dt);
+        if (mDatasetSelectorHidden)
+            p.second.update(dt);
+    }
+    if (!mDatasetSelectorHidden) {
+        for (auto& button : mDatasetOptions) {
+            button.update(dt);
+        }
     }
 }
 
 void NavBar::draw() {
     DrawRectangleRec(mRect, mColor);
     mDatasetSwitch.draw();
+    TextBox dataName(Dictionary::getInstance().getDict().getDataName(),
+                     {58, 20, 200, 61});
+    dataName.setColor(BLANK);
+    dataName.setBorderColor(BLANK);
+    dataName.setTextSize(31);
+    dataName.draw();
     for (auto& p : mNavButtons) {
         p.second.draw();
         if (p.first == mSelection) {
@@ -31,6 +60,14 @@ void NavBar::draw() {
             DrawRectangleRec(rect, GetColor(0x00000011));
             DrawLineEx({0, rect.y}, {0, rect.y + rect.height}, 8,
                        AppColor::PRIMARY); // Indicator
+        }
+    }
+    if (!mDatasetSelectorHidden) {
+        DrawRectangleRounded(
+            {26, 81, 246, (float)30 + 61 * mDatasetOptions.size()}, 0.122,
+            GUIComponent::ROUNDED_SEGMENTS, AppColor::BACKGROUND_1);
+        for (auto& button : mDatasetOptions) {
+            button.draw();
         }
     }
 }
