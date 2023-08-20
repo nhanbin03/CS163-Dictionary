@@ -125,11 +125,15 @@ void InputBox::checkInteraction() {
             (mIsWrapped ? (Rectangle){mRect.x, mRect.y, mRect.width, mActualHeight} :
                           mRect))) {
         SetMouseCursor(MOUSE_CURSOR_IBEAM);
+        mIsMouseHovered = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             mIsFocused = true;
         }
     } else {
-        SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+        if (mIsMouseHovered) {
+            SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+        }
+        mIsMouseHovered = false;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             mIsFocused = false;
         }

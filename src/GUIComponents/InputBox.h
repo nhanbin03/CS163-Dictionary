@@ -63,6 +63,7 @@ private:
 
     std::string mPlaceHolder;
 
+    bool mIsMouseHovered{false};
     bool mIsFocused{false};
     int mIndexPos{0};
     float mCursorTick{0};

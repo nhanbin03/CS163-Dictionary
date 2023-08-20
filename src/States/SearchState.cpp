@@ -65,9 +65,9 @@ SearchState::~SearchState() {
 }
 
 bool SearchState::update(float dt) {
+    mScrollList.update(dt);
     mSearchBar.update(dt);
     mSearchButton.update(dt);
-    mScrollList.update(dt);
     mModeButton.update(dt);
     mNavBar.update(dt);
     return true;
