@@ -18,6 +18,8 @@ void TextBox::update(float dt) {
 }
 
 void TextBox::draw() {
+    if (mRect.width == 0)
+        return;
     DrawRectangleRounded({mRect.x, mRect.y, mRect.width, mActualHeight},
                          mCornerRoundness, ROUNDED_SEGMENTS, mColor);
     if (mBorderThickness != 0)

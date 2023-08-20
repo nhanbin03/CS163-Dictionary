@@ -49,6 +49,9 @@ void InputBox::update(float dt) {
 }
 
 void InputBox::draw() {
+    if (mRect.width == 0)
+        return;
+
     DrawRectangleRounded({mRect.x, mRect.y, mRect.width, mActualHeight},
                          mCornerRoundness, ROUNDED_SEGMENTS, mColor);
     if (mBorderThickness != 0)
@@ -121,9 +124,9 @@ void InputBox::checkInteraction() {
 
     if (mClickable
         && CheckCollisionPointRec(
-            mousePoint,
-            (mIsWrapped ? (Rectangle){mRect.x, mRect.y, mRect.width, mActualHeight} :
-                          mRect))) {
+            mousePoint, (mIsWrapped ? (Rectangle){mRect.x, mRect.y, mRect.width,
+                                                  mActualHeight} :
+                                      mRect))) {
         SetMouseCursor(MOUSE_CURSOR_IBEAM);
         mIsMouseHovered = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {

@@ -2,9 +2,10 @@
 #define WORDINFO_H
 
 #include "Core/Core.h"
+#include "Core/Dictionary.h"
 #include "GUIComponents/Button.h"
-#include "GUIComponents/TextBox.h"
 #include "GUIComponents/InputBox.h"
+#include "GUIComponents/TextBox.h"
 
 #include "raylib.h"
 
@@ -28,6 +29,9 @@ private:
     Rectangle mRect;
 
     Button mReturnButton;
+    Button mEditButton;
+    Button mCancelButton;
+    Button mSaveButton;
 
     int mPositionY{0};
 
@@ -38,7 +42,14 @@ private:
 private:
     void drawDefinitions();
 
-};
+    void updateInfoMode(float dt);
+    void updateEditMode(float dt);
 
+    void drawInfoMode();
+    void drawEditMode();
+
+    void addEdittors();
+    void saveEdittors();
+};
 
 #endif // WORDINFO_H
