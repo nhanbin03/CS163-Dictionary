@@ -50,6 +50,7 @@ private:
 
     void addEdittors();
     void saveEdittors();
+    void addOneEdittor(const std::string& str);
 };
 
 #endif // WORDINFO_H

@@ -72,6 +72,8 @@ void Application::loadTextures() {
     TextureHolder::getInstance().load(TextureID::Cancel,
                                       BASE_PATH + "Cancel.png");
     TextureHolder::getInstance().load(TextureID::Save, BASE_PATH + "Save.png");
+    TextureHolder::getInstance().load(TextureID::AddDefinition,
+                                      BASE_PATH + "AddDefinition.png");
 }
 
 void Application::loadFonts() {

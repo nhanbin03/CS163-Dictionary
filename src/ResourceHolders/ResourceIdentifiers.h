@@ -9,6 +9,7 @@ enum class TextureID {
     Edit,
     Cancel,
     Save,
+    AddDefinition,
     DatasetSwitch,
     SearchNav,
     FavoriteNav,

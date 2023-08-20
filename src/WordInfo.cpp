@@ -36,6 +36,15 @@ WordInfo::WordInfo() {
         this->mEditMode = false;
         this->saveEdittors();
     });
+
+    mAddDefBtn.setSize({637, 74});
+    mAddDefBtn.setBorderThickness(0);
+    mAddDefBtn.setColor(BLANK);
+    mAddDefBtn.setTexture(
+        TextureHolder::getInstance().get(TextureID::AddDefinition));
+    mAddDefBtn.setCallback([this]() {
+        this->addOneEdittor("");
+    });
 }
 
 WordInfo::~WordInfo() {
@@ -112,11 +121,10 @@ void WordInfo::updateInfoMode(float dt) {
 }
 
 void WordInfo::updateEditMode(float dt) {
+    mAddDefBtn.update(dt);
+
     float startingPosY = 282 + mPositionY;
     for (int i = 0; i < mDefEdittors.size(); i++) {
-        if (mWord->defs[i]->isDeleted())
-            continue;
-
         mDefEdittors[i]->setRect({343, startingPosY, 637, 0});
 
         if (startingPosY < 282) {
@@ -125,9 +133,11 @@ void WordInfo::updateEditMode(float dt) {
             mDefEdittors[i]->activateClickability();
         }
         mDefEdittors[i]->update(dt);
-        mDefEdittors[i]->setCornerRoundness(20 * 2 / mDefEdittors[i]->getHeight());
+        mDefEdittors[i]->setCornerRoundness(20 * 2
+                                            / mDefEdittors[i]->getHeight());
         startingPosY += mDefEdittors[i]->getHeight() + 20;
     }
+    mAddDefBtn.setPosition({343, startingPosY});
 
     mCancelButton.update(dt);
     mSaveButton.update(dt);
@@ -155,27 +165,36 @@ void WordInfo::drawEditMode() {
     for (auto inputPtr : mDefEdittors) {
         inputPtr->draw();
     }
+    mAddDefBtn.draw();
 }
 
 void WordInfo::addEdittors() {
     mDefEdittors.clear();
     for (int i = 0; i < mWord->defs.size(); i++) {
-        mDefEdittors.push_back(
-            std::make_unique<InputBox>(mWord->defs[i]->orgStr));
-        mDefEdittors.back()->setColor(AppColor::BACKGROUND_1);
-        mDefEdittors.back()->setWrapped();
-        mDefEdittors.back()->setTextSize(22);
-        mDefEdittors.back()->setBorderThickness(1);
+        if (mWord->defs[i]->isDeleted()) continue;
+        addOneEdittor(mWord->defs[i]->orgStr);
     }
 }
 
 void WordInfo::saveEdittors() {
+    int defSize = mWord->defs.size();
+    int j = 0; // Iterator for defs cuz some of the defs maybe deleted (emptry string)
     for (int i = 0; i < mDefEdittors.size(); i++) {
-        if (i < mWord->defs.size()) {
-            Dictionary::getInstance().getDict().editDefinition(mWord->defs[i], mDefEdittors[i]->getInputText());
+        while (j < defSize && mWord->defs[j]->isDeleted()) j++;
+        if (j < defSize) {
+            Dictionary::getInstance().getDict().editDefinition(
+                mWord->defs[j], mDefEdittors[i]->getInputText());
         } else {
-            Dictionary::getInstance().getDict().addDefinition(mDefEdittors[i]->getInputText(), mWord);
+            Dictionary::getInstance().getDict().addDefinition(
+                mDefEdittors[i]->getInputText(), mWord);
         }
     }
 }
 
+void WordInfo::addOneEdittor(const std::string& str) {
+    mDefEdittors.push_back(std::make_unique<InputBox>(str));
+    mDefEdittors.back()->setColor(AppColor::BACKGROUND_1);
+    mDefEdittors.back()->setWrapped();
+    mDefEdittors.back()->setTextSize(22);
+    mDefEdittors.back()->setBorderThickness(1);
+}
