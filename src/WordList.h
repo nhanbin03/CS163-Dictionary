@@ -18,6 +18,7 @@ public:
 
     void setRect(Rectangle rect);
 
+    void setWord(Core::Word* word);
     void resetPosition();
 
 private:

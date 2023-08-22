@@ -24,6 +24,10 @@ SearchState::SearchState(StateStack &stack, Context context)
     mSearchButton.setColor(AppColor::PRIMARY);
     mSearchButton.setCornerRoundness(0.6);
     mSearchButton.setCallback([this]() {
+        if (this->mSearchBar.getInputText() == "") {
+            this->mScrollList.setWord(Dictionary::getInstance().getDict().getRandomWord());
+            return;
+        }
         if (this->mIsDefinitionSearch) {
             this->mWordList =
                 Dictionary::getInstance().getDict().searchDefinition(
@@ -67,9 +71,17 @@ SearchState::~SearchState() {
 bool SearchState::update(float dt) {
     mScrollList.update(dt);
     mSearchBar.update(dt);
+
+    if (mSearchBar.getInputText() == "") {
+        mSearchButton.setText("Random");
+    } else {
+        mSearchButton.setText("Search");
+    }
+
     mSearchButton.update(dt);
     mModeButton.update(dt);
     mNavBar.update(dt);
+
     return true;
 }
 
@@ -77,6 +89,15 @@ void SearchState::draw() {
     ClearBackground(AppColor::BACKGROUND_1);
     mScrollList.draw();
     mSearchBar.draw();
+
+    if (mSearchBar.getInputText() == "") {
+        TextBox suggestionText("Don't know what to search?", {837, 76, 200, 1});
+        suggestionText.setBorderThickness(0);
+        suggestionText.setColor(BLANK);
+        suggestionText.setTextSize(15);
+        suggestionText.draw();
+    } 
+
     mSearchButton.draw();
     mModeButton.draw();
     mNavBar.draw();

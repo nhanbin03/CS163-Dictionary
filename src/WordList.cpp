@@ -76,6 +76,10 @@ void WordList::setRect(Rectangle rect) {
     mInfoPage.setRect(mRect);
 }
 
+void WordList::setWord(Core::Word* word) {
+    mInfoPage.setWord(word);
+}
+
 void WordList::resetPosition() {
     mPositionY = 0;
 }
