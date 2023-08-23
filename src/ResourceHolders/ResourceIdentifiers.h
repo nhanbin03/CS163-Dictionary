@@ -17,7 +17,8 @@ enum class TextureID {
     OptionPanel,
     StarUnselected,
     StarSelected,
-    Settings
+    Settings,
+    Delete
 };
 
 enum class FontID {

@@ -29,6 +29,7 @@ private:
     Rectangle mRect;
 
     Button mStarButton;
+    Button mDeleteButton;
 
     Button mReturnButton;
     Button mEditButton;

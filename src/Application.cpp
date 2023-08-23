@@ -84,6 +84,8 @@ void Application::loadTextures() {
                                       BASE_PATH + "StarSelected.png");
     TextureHolder::getInstance().load(TextureID::Settings,
                                       BASE_PATH + "Settings.png");
+    TextureHolder::getInstance().load(TextureID::Delete,
+                                      BASE_PATH + "Delete.png");
 }
 
 void Application::loadFonts() {

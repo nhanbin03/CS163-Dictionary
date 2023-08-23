@@ -18,6 +18,15 @@ WordInfo::WordInfo() {
         }
     });
 
+    mDeleteButton.setRect({872, 196, 33, 33});
+    mDeleteButton.setTexture(TextureHolder::getInstance().get(TextureID::Delete));
+    mDeleteButton.setBorderThickness(0);
+    mDeleteButton.setColor(BLANK);
+    mDeleteButton.setCallback([this]() {
+        Dictionary::getInstance().getDict().removeWord(this->mWord);
+        this->mWord = nullptr;
+    });
+
     mReturnButton.setRect({341, 532, 75, 75});
     mReturnButton.setBorderThickness(0);
     mReturnButton.setColor(BLANK);
@@ -72,6 +81,7 @@ void WordInfo::update(float dt) {
         return;
 
     mStarButton.update(dt);
+    mDeleteButton.update(dt);
 
     mPositionY += (GetMouseWheelMove() * 20);
 
@@ -100,6 +110,7 @@ void WordInfo::draw() {
     wordText.draw();
 
     mStarButton.draw();
+    mDeleteButton.draw();
 
     drawDefinitions();
 
