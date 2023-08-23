@@ -28,6 +28,8 @@ private:
 
     Rectangle mRect;
 
+    Button mStarButton;
+
     Button mReturnButton;
     Button mEditButton;
     Button mCancelButton;

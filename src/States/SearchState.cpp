@@ -45,11 +45,11 @@ SearchState::SearchState(StateStack &stack, Context context)
     mScrollList.setRect({341, 163, 641, 477});
 
     // Mode button
+    mIsDefinitionSearch = false;
     mModeButton.setRect({688, 20, 309, 47});
     mModeButton.setTexture(
         TextureHolder::getInstance().get(TextureID::DefinitionSwitch));
     mModeButton.setColor(BLANK);
-    mIsDefinitionSearch = false;
     mModeButton.setCallback([this]() {
         if (this->mIsDefinitionSearch) {
             this->mModeButton.setTexture(

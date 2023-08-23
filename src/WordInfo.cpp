@@ -1,6 +1,23 @@
 #include "WordInfo.h"
 
 WordInfo::WordInfo() {
+    mStarButton.setRect({946, 196, 33, 33});
+    mStarButton.setBorderThickness(0);
+    mStarButton.setColor(BLANK);
+    mStarButton.setCallback([this]() {
+        if (this->mWord == nullptr)
+            return;
+        if (Dictionary::getInstance().getDict().isFavorite(this->mWord)) {
+            Dictionary::getInstance().getDict().removeFavorite(this->mWord);
+            this->mStarButton.setTexture(
+                TextureHolder::getInstance().get(TextureID::StarUnselected));
+        } else {
+            Dictionary::getInstance().getDict().addFavorite(this->mWord);
+            this->mStarButton.setTexture(
+                TextureHolder::getInstance().get(TextureID::StarSelected));
+        }
+    });
+
     mReturnButton.setRect({341, 532, 75, 75});
     mReturnButton.setBorderThickness(0);
     mReturnButton.setColor(BLANK);
@@ -54,6 +71,8 @@ void WordInfo::update(float dt) {
     if (mWord == nullptr)
         return;
 
+    mStarButton.update(dt);
+
     mPositionY += (GetMouseWheelMove() * 20);
 
     if (mPositionY > 0) {
@@ -80,6 +99,8 @@ void WordInfo::draw() {
     wordText.makeShort();
     wordText.draw();
 
+    mStarButton.draw();
+
     drawDefinitions();
 
     if (mEditMode) {
@@ -98,6 +119,13 @@ void WordInfo::setRect(Rectangle rect) {
 void WordInfo::setWord(Core::Word* word) {
     mWord = word;
     mPositionY = 0;
+    if (Dictionary::getInstance().getDict().isFavorite(mWord)) {
+        mStarButton.setTexture(
+            TextureHolder::getInstance().get(TextureID::StarSelected));
+    } else {
+        mStarButton.setTexture(
+            TextureHolder::getInstance().get(TextureID::StarUnselected));
+    }
 }
 
 bool WordInfo::isActivated() {
@@ -171,14 +199,16 @@ void WordInfo::drawEditMode() {
 void WordInfo::addEdittors() {
     mDefEdittors.clear();
     for (int i = 0; i < mWord->defs.size(); i++) {
-        if (mWord->defs[i]->isDeleted()) continue;
+        if (mWord->defs[i]->isDeleted())
+            continue;
         addOneEdittor(mWord->defs[i]->orgStr);
     }
 }
 
 void WordInfo::saveEdittors() {
     int defSize = mWord->defs.size();
-    int j = 0; // Iterator for defs cuz some of the defs maybe deleted (emptry string)
+    int j = 0; // Iterator for defs cuz some of the defs maybe deleted (emptry
+               // string)
     for (int i = 0; i < mDefEdittors.size(); i++) {
         while (j < defSize && mWord->defs[j]->isDeleted()) j++;
         if (j < defSize) {
