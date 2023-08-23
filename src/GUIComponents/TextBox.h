@@ -31,6 +31,8 @@ public:
     void setText(std::string text);
     std::string getText() const;
 
+    void setTextColor(Color color);
+
     void makeShort();
 
     float getHeight();

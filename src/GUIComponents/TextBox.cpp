@@ -121,6 +121,10 @@ std::string TextBox::getText() const {
     return mText;
 }
 
+void TextBox::setTextColor(Color color) {
+    mTextColor = color;
+}
+
 void TextBox::makeShort() {
     mIsShort = true;
 }
