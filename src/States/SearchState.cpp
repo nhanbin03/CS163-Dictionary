@@ -74,6 +74,7 @@ bool SearchState::update(float dt) {
 
     if (mSearchBar.getInputText() == "") {
         mSearchButton.setText("Random");
+        mWordList = Dictionary::getInstance().getDict().getHistory();
     } else {
         mSearchButton.setText("Search");
     }

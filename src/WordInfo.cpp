@@ -117,6 +117,8 @@ void WordInfo::setRect(Rectangle rect) {
 }
 
 void WordInfo::setWord(Core::Word* word) {
+    if (word == nullptr) return;
+    Dictionary::getInstance().getDict().updateHistory(word);
     mWord = word;
     mPositionY = 0;
     if (Dictionary::getInstance().getDict().isFavorite(mWord)) {
