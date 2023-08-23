@@ -9,10 +9,21 @@ InputBox::InputBox(std::string defaultText, Rectangle bounds) {
     mBorderThickness = 1;
     mInputText = defaultText;
     mIndexPos = defaultText.size();
-    mActualHeight = bounds.height;
+    mInitHeight = bounds.height;
 }
 
 InputBox::~InputBox() {
+}
+
+void InputBox::setRect(Rectangle rect) {
+    mRect.x = rect.x;
+    mRect.y = rect.y;
+    mRect.width = rect.width;
+    if (mIsWrapped) {
+        mInitHeight = rect.height;
+    } else {
+        mRect.height = rect.height;
+    }
 }
 
 void InputBox::reset() {
@@ -52,12 +63,11 @@ void InputBox::draw() {
     if (mRect.width == 0)
         return;
 
-    DrawRectangleRounded({mRect.x, mRect.y, mRect.width, mActualHeight},
-                         mCornerRoundness, ROUNDED_SEGMENTS, mColor);
-    if (mBorderThickness != 0)
-        DrawRectangleRoundedLines(
-            {mRect.x, mRect.y, mRect.width, mActualHeight}, mCornerRoundness,
-            ROUNDED_SEGMENTS, mBorderThickness, mBorderColor);
+    DrawRectangleRounded(mRect, mCornerRoundness, ROUNDED_SEGMENTS, mColor);
+    if (mBorderThickness != 0) {
+        DrawRectangleRoundedLines(mRect, mCornerRoundness, ROUNDED_SEGMENTS,
+                                  mBorderThickness, mBorderColor);
+    }
     if (mIsWrapped) {
         drawTextWrapped();
     } else {
@@ -90,7 +100,7 @@ std::string InputBox::getInputText() const {
 }
 
 float InputBox::getHeight() {
-    return mActualHeight;
+    return mRect.height;
 }
 
 void InputBox::activateClickability() {
@@ -122,11 +132,7 @@ InputBox::integerSpaceSeparatedListValidator() {
 void InputBox::checkInteraction() {
     Vector2 mousePoint = GetMousePosition();
 
-    if (mClickable
-        && CheckCollisionPointRec(
-            mousePoint, (mIsWrapped ? (Rectangle){mRect.x, mRect.y, mRect.width,
-                                                  mActualHeight} :
-                                      mRect))) {
+    if (mClickable && CheckCollisionPointRec(mousePoint, mRect)) {
         SetMouseCursor(MOUSE_CURSOR_IBEAM);
         mIsMouseHovered = true;
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -184,7 +190,7 @@ void InputBox::drawTextOverflow() {
 void InputBox::drawTextWrapped() {
     int textSize = mTextSize;
     if (textSize == 0) {
-        textSize = std::min(16.0f, mRect.height * 2 / 3); // Default text size
+        textSize = std::min(16.0f, mInitHeight * 2 / 3); // Default text size
     }
     Rectangle textArea = mRect;
     textArea.x += mTextSize / 3;
@@ -248,8 +254,8 @@ void InputBox::drawTextWrapped() {
                    line.c_str(), {startingX, yOffset}, textSize, 0, mTextColor);
         yOffset += (float)textSize;
     }
-    mActualHeight =
-        std::max(mRect.height,
+    mRect.height =
+        std::max(mInitHeight,
                  yOffset - mRect.y
                      + 2 * textSize / 3); // Update the height in draw function,
                                           // kinda meh but i cant help

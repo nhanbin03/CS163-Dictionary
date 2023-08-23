@@ -23,6 +23,8 @@ public:
                       Rectangle bounds = {0, 0, 0, 0});
     ~InputBox();
 
+    void setRect(Rectangle rect);
+
     void reset();
 
     void update(float dt);
@@ -72,7 +74,7 @@ private:
 
     bool mIsWrapped{false};
 
-    float mActualHeight;
+    float mInitHeight;
 
     bool mClickable{true};
 };
