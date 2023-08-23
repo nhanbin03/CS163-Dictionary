@@ -35,53 +35,87 @@ WordGameState::WordGameState(StateStack& stack, Context context)
     mNextBtn.setCallback([this]() {
         this->generateNewQuiz();
     });
+
+    mDetailsBtn.setRect({812, 20, 185, 47});
+    mDetailsBtn.setTexture(
+        TextureHolder::getInstance().get(TextureID::Details));
+    mDetailsBtn.setColor(BLANK);
+    mDetailsBtn.setCornerRoundness(13.0 * 2 / 47);
+    mDetailsBtn.setBorderThickness(1);
+    mDetailsBtn.setBorderColor(AppColor::TEXT);
+    mDetailsBtn.setCallback([this]() {
+        this->mInfoPage.setWord(this->mQuiz.first);
+    });
+
+    mInfoPage.setRect({341, 163, 641, 477});
 }
 
 WordGameState::~WordGameState() {
 }
 
 bool WordGameState::update(float dt) {
-    for (int i = 0; i < 4; i++) {
-        mChoices[i].update(dt);
-    }
-
-    if (mSelection) {
+    if (mInfoPage.isActivated()) {
+        mInfoPage.update(dt);
+    } else {
         for (int i = 0; i < 4; i++) {
-            if (mQuiz.second[0] == mQuiz.second[i + 1]) {
-                mChoices[i].setBorderThickness(4);
-                mChoices[i].setBorderColor(AppColor::QUIZ_CORRECT);
+            mChoices[i].update(dt);
+        }
+
+        if (mSelection) {
+            mDetailsBtn.update(dt);
+            for (int i = 0; i < 4; i++) {
+                if (mQuiz.second[0] == mQuiz.second[i + 1]) {
+                    mChoices[i].setBorderThickness(4);
+                    mChoices[i].setBorderColor(AppColor::QUIZ_CORRECT);
+                }
             }
         }
-    }
 
-    mNextBtn.update(dt);
+        mNextBtn.update(dt);
+    }
     mNavBar.update(dt);
     return true;
 }
 
 void WordGameState::draw() {
     ClearBackground(AppColor::BACKGROUND_1);
-    TextBox subtitleText("Guess the word:", {320, 28, 617, 1});
-    subtitleText.setTextSize(35);
-    subtitleText.setBorderColor(BLANK);
-    subtitleText.setColor(BLANK);
-    subtitleText.draw();
+    if (mInfoPage.isActivated()) {
+        TextBox titleText("Let's review!", {321, 63, 600, 1});
+        titleText.setBorderThickness(0);
+        titleText.setColor(BLANK);
+        titleText.setTextSize(60);
+        titleText.draw();
 
-    TextBox wordText(mQuiz.first->orgStr, {331, 64, 498, 84});
-    wordText.setTextSize(75);
-    wordText.setBorderColor(BLANK);
-    wordText.setColor(BLANK);
-    wordText.makeShort();
-    wordText.draw();
+        mInfoPage.draw();
 
-    for (int i = 0; i < 4; i++) {
-        mChoices[i].draw();
-        TextBox defText(mQuiz.second[i + 1]->orgStr, mChoices[i].getRect());
-        defText.setTextSize(20);
-        defText.setColor(BLANK);
-        defText.draw();
+        DrawLineEx({341, 163}, {982, 163}, 1, AppColor::TEXT);
+    } else {
+        TextBox subtitleText("Guess the word:", {320, 28, 617, 1});
+        subtitleText.setTextSize(35);
+        subtitleText.setBorderColor(BLANK);
+        subtitleText.setColor(BLANK);
+        subtitleText.draw();
+
+        TextBox wordText(mQuiz.first->orgStr, {331, 64, 498, 84});
+        wordText.setTextSize(75);
+        wordText.setBorderColor(BLANK);
+        wordText.setColor(BLANK);
+        wordText.makeShort();
+        wordText.draw();
+
+        if (mSelection) {
+            mDetailsBtn.draw();
+        }
+        for (int i = 0; i < 4; i++) {
+            mChoices[i].draw();
+            TextBox defText(mQuiz.second[i + 1]->orgStr, mChoices[i].getRect());
+            defText.setTextSize(20);
+            defText.setColor(BLANK);
+            defText.setBorderColor(BLANK);
+            defText.draw();
+        }
+        mNextBtn.draw();
     }
-    mNextBtn.draw();
     mNavBar.draw();
 }
 

@@ -88,6 +88,8 @@ void Application::loadTextures() {
                                       BASE_PATH + "Settings.png");
     TextureHolder::getInstance().load(TextureID::Delete,
                                       BASE_PATH + "Delete.png");
+    TextureHolder::getInstance().load(TextureID::Details,
+                                      BASE_PATH + "Details.png");
 }
 
 void Application::loadFonts() {

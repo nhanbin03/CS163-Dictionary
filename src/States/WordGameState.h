@@ -27,6 +27,9 @@ private:
     Core::Definition * mSelection{nullptr};
 
     Button mNextBtn;
+    Button mDetailsBtn;
+
+    WordInfo mInfoPage;
 
 private:
     void generateNewQuiz();
