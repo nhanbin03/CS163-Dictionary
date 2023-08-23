@@ -2,6 +2,7 @@
 #include "ResourceHolders/ResourceIdentifiers.h"
 #include "States/SearchState.h"
 #include "States/FavoriteState.h"
+#include "States/WordGameState.h"
 #include "States/SettingsState.h"
 #include "States/StateIdentifiers.h"
 
@@ -24,7 +25,7 @@ Application::Application()
     //     TextureHolder::getInstance().get(TextureID::IconLogo)));
 
     registerStates();
-    mStateStack.pushState(StateIDs::Search);
+    mStateStack.pushState(StateIDs::WordGameState);
 }
 
 Application::~Application() {
@@ -51,6 +52,7 @@ void Application::render() {
 void Application::registerStates() {
     mStateStack.registerState<SearchState>(StateIDs::Search);
     mStateStack.registerState<FavoriteState>(StateIDs::Favorite);
+    mStateStack.registerState<WordGameState>(StateIDs::WordGameState);
     mStateStack.registerState<SettingsState>(StateIDs::Settings);
 }
 

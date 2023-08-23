@@ -6,6 +6,7 @@ enum class StateIDs {
     Search,
     Favorite,
     Game,
+    WordGameState,
     Settings
 };
 

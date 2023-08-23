@@ -14,6 +14,8 @@ namespace AppColor {
 
     const Color PRIMARY = GetColor(0x0C8CE9FF);
 
+    const Color QUIZ_INCORRECT = GetColor(0xFF0000FF);
+    const Color QUIZ_CORRECT = GetColor(0x309600FF);
 
 } // namespace AppColor
 
