@@ -25,7 +25,8 @@ SearchState::SearchState(StateStack &stack, Context context)
     mSearchButton.setCornerRoundness(0.6);
     mSearchButton.setCallback([this]() {
         if (this->mSearchBar.getInputText() == "") {
-            this->mScrollList.setWord(Dictionary::getInstance().getDict().getRandomWord());
+            this->mScrollList.setWord(
+                Dictionary::getInstance().getDict().getRandomWord());
             return;
         }
         if (this->mIsDefinitionSearch) {
@@ -33,8 +34,13 @@ SearchState::SearchState(StateStack &stack, Context context)
                 Dictionary::getInstance().getDict().searchDefinition(
                     this->mSearchBar.getInputText());
         } else {
-            this->mWordList = Dictionary::getInstance().getDict().searchKeyword(
-                this->mSearchBar.getInputText());
+            // this->mWordList =
+            // Dictionary::getInstance().getDict().searchKeyword(
+            //     this->mSearchBar.getInputText());
+            if (!this->mWordList.empty()
+                && this->mWordList[0]->str == this->mSearchBar.getInputText()) {
+                this->mScrollList.setWord(this->mWordList[0]);
+            }
         }
         if (this->mWordList.size() > Core::RESULT_LIMIT)
             this->mWordList.resize(Core::RESULT_LIMIT);
@@ -77,6 +83,12 @@ bool SearchState::update(float dt) {
         mWordList = Dictionary::getInstance().getDict().getHistory();
     } else {
         mSearchButton.setText("Search");
+        if (!mIsDefinitionSearch) {
+            mWordList = Dictionary::getInstance().getDict().searchKeyword(
+                mSearchBar.getInputText());
+            if (mWordList.size() > Core::RESULT_LIMIT)
+                mWordList.resize(Core::RESULT_LIMIT);
+        }
     }
 
     mSearchButton.update(dt);
@@ -97,7 +109,7 @@ void SearchState::draw() {
         suggestionText.setColor(BLANK);
         suggestionText.setTextSize(15);
         suggestionText.draw();
-    } 
+    }
 
     mSearchButton.draw();
     mModeButton.draw();
