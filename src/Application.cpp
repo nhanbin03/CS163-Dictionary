@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ResourceHolders/ResourceIdentifiers.h"
 #include "States/SearchState.h"
+#include "States/FavoriteState.h"
 #include "States/StateIdentifiers.h"
 
 #include "raylib.h"
@@ -48,6 +49,7 @@ void Application::render() {
 
 void Application::registerStates() {
     mStateStack.registerState<SearchState>(StateIDs::Search);
+    mStateStack.registerState<FavoriteState>(StateIDs::Favorite);
 }
 
 void Application::loadTextures() {

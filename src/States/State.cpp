@@ -10,7 +10,7 @@ State::State(StateStack &stack, Context context)
     });
     mNavBar.addNav(NavBar::NavID::Favorite, [this]() {
         this->requestStackPop();
-        this->requestStackPush(StateIDs::Search);
+        this->requestStackPush(StateIDs::Favorite);
     });
     mNavBar.addNav(NavBar::NavID::Game, [this]() {
         this->requestStackPop();
