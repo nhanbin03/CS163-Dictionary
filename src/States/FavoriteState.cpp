@@ -25,6 +25,13 @@ bool FavoriteState::update(float dt) {
 
 void FavoriteState::draw() {
     ClearBackground(AppColor::BACKGROUND_1);
+
+    TextBox titleText("Favorite", {321, 63, 300, 1});
+    titleText.setBorderThickness(0);
+    titleText.setColor(BLANK);
+    titleText.setTextSize(60);
+    titleText.draw();
+
     mScrollList.draw();
     mNavBar.draw();
     DrawLineEx({341, 163}, {982, 163}, 1, AppColor::TEXT);
