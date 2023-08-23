@@ -14,7 +14,7 @@ State::State(StateStack &stack, Context context)
     });
     mNavBar.addNav(NavBar::NavID::Game, [this]() {
         this->requestStackPop();
-        this->requestStackPush(StateIDs::Search);
+        this->requestStackPush(StateIDs::Game);
     });
     mNavBar.addSettingsNav([this]() {
         this->requestStackPop();

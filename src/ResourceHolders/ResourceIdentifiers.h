@@ -19,7 +19,9 @@ enum class TextureID {
     StarSelected,
     Settings,
     Delete,
-    Details
+    Details,
+    WordGame,
+    DefinitionGame
 };
 
 enum class FontID {

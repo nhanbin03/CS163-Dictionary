@@ -2,6 +2,7 @@
 #include "ResourceHolders/ResourceIdentifiers.h"
 #include "States/SearchState.h"
 #include "States/FavoriteState.h"
+#include "States/GameState.h"
 #include "States/WordGameState.h"
 #include "States/DefinitionGameState.h"
 #include "States/SettingsState.h"
@@ -26,7 +27,7 @@ Application::Application()
     //     TextureHolder::getInstance().get(TextureID::IconLogo)));
 
     registerStates();
-    mStateStack.pushState(StateIDs::DefinitionGame);
+    mStateStack.pushState(StateIDs::Search);
 }
 
 Application::~Application() {
@@ -53,6 +54,7 @@ void Application::render() {
 void Application::registerStates() {
     mStateStack.registerState<SearchState>(StateIDs::Search);
     mStateStack.registerState<FavoriteState>(StateIDs::Favorite);
+    mStateStack.registerState<GameState>(StateIDs::Game);
     mStateStack.registerState<WordGameState>(StateIDs::WordGame);
     mStateStack.registerState<DefinitionGameState>(StateIDs::DefinitionGame);
     mStateStack.registerState<SettingsState>(StateIDs::Settings);
@@ -92,6 +94,10 @@ void Application::loadTextures() {
                                       BASE_PATH + "Delete.png");
     TextureHolder::getInstance().load(TextureID::Details,
                                       BASE_PATH + "Details.png");
+    TextureHolder::getInstance().load(TextureID::WordGame,
+                                      BASE_PATH + "WordGame.png");
+    TextureHolder::getInstance().load(TextureID::DefinitionGame,
+                                      BASE_PATH + "DefinitionGame.png");
 }
 
 void Application::loadFonts() {
