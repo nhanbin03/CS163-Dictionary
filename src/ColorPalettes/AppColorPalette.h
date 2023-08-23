@@ -9,6 +9,7 @@ namespace AppColor {
     const Color BACKGROUND_OPAQUE = GetColor(0x000000BA);
 
     const Color TEXT = GetColor(0x000000FF);
+    const Color TEXT_FADED = GetColor(0x818181FF);
     const Color TEXT_CONTRAST = GetColor(0xFFFFFFFF);
 
     const Color PRIMARY = GetColor(0x0C8CE9FF);

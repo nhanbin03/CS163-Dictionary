@@ -16,7 +16,8 @@ enum class TextureID {
     GameNav,
     OptionPanel,
     StarUnselected,
-    StarSelected
+    StarSelected,
+    Settings
 };
 
 enum class FontID {

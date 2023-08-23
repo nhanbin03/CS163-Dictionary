@@ -31,6 +31,11 @@ NavBar::NavBar() {
         mDatasetOptions.push_back(std::move(button));
     }
 
+    mSettingsBtn.setRect({239, 580, 39, 39});
+    mSettingsBtn.setColor(BLANK);
+    mSettingsBtn.setTexture(
+        TextureHolder::getInstance().get(TextureID::Settings));
+
     mOptionPanel = TextureHolder::getInstance().get(TextureID::OptionPanel);
     scaleTexture(mOptionPanel, {252, 341});
 }
@@ -46,6 +51,7 @@ void NavBar::update(float dt) {
             button.update(dt);
         }
     }
+    mSettingsBtn.update(dt);
 }
 
 void NavBar::draw() {
@@ -75,6 +81,7 @@ void NavBar::draw() {
             button.draw();
         }
     }
+    mSettingsBtn.draw();
 }
 
 void NavBar::addNav(NavID id, std::function<void()> navigate) {
@@ -103,6 +110,10 @@ void NavBar::addNav(NavID id, std::function<void()> navigate) {
     // navButton.setContentColor(AppColor::TEXT);
     navButton.setCallback(navigate);
     mNavButtons[id] = std::move(navButton);
+}
+
+void NavBar::addSettingsNav(std::function<void()> navigate) {
+    mSettingsBtn.setCallback(navigate);
 }
 
 void NavBar::setCurNav(NavID id) {

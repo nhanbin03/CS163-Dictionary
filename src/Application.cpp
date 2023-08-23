@@ -2,6 +2,7 @@
 #include "ResourceHolders/ResourceIdentifiers.h"
 #include "States/SearchState.h"
 #include "States/FavoriteState.h"
+#include "States/SettingsState.h"
 #include "States/StateIdentifiers.h"
 
 #include "raylib.h"
@@ -50,6 +51,7 @@ void Application::render() {
 void Application::registerStates() {
     mStateStack.registerState<SearchState>(StateIDs::Search);
     mStateStack.registerState<FavoriteState>(StateIDs::Favorite);
+    mStateStack.registerState<SettingsState>(StateIDs::Settings);
 }
 
 void Application::loadTextures() {
@@ -80,6 +82,8 @@ void Application::loadTextures() {
                                       BASE_PATH + "StarUnselected.png");
     TextureHolder::getInstance().load(TextureID::StarSelected,
                                       BASE_PATH + "StarSelected.png");
+    TextureHolder::getInstance().load(TextureID::Settings,
+                                      BASE_PATH + "Settings.png");
 }
 
 void Application::loadFonts() {

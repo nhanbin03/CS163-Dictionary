@@ -29,6 +29,7 @@ public:
     void draw();
 
     void addNav(NavID id, std::function<void()> navigate);
+    void addSettingsNav(std::function<void()> navigate);
     void setCurNav(NavID id);
 
 private:
@@ -38,6 +39,8 @@ private:
 
     bool mDatasetSelectorHidden{true};
     std::vector<Button> mDatasetOptions;
+
+    Button mSettingsBtn;
 
     Texture2D mOptionPanel;
 };

@@ -16,6 +16,10 @@ State::State(StateStack &stack, Context context)
         this->requestStackPop();
         this->requestStackPush(StateIDs::Search);
     });
+    mNavBar.addSettingsNav([this]() {
+        this->requestStackPop();
+        this->requestStackPush(StateIDs::Settings);
+    });
 }
 
 State::~State() {
