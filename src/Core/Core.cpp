@@ -80,6 +80,11 @@ void Core::updateHistory(Word* word) {
 }
 
 std::vector<Core::Word*> Core::getHistory() {
+    for (int i = (int)mHistory.size() - 1; i >= 0; i--) {
+        if (mHistory[i]->isDeleted()) {
+            mHistory.erase(mHistory.begin() + i);
+        }
+    }
     return mHistory;
 }
 
