@@ -87,6 +87,13 @@ bool SettingsState::update(float dt) {
 
 void SettingsState::draw() {
     ClearBackground(AppColor::BACKGROUND_1);
+
+    TextBox titleText("Settings", {321, 63, 300, 1});
+    titleText.setBorderThickness(0);
+    titleText.setColor(BLANK);
+    titleText.setTextSize(60);
+    titleText.draw();
+
     if (mIsOpenAddWord) {
         DrawRectangleRoundedLines({367, 181, 591, 139}, 20.0 * 2 / 139,
                                   GUIComponent::ROUNDED_SEGMENTS, 1,
@@ -100,6 +107,20 @@ void SettingsState::draw() {
                                   AppColor::TEXT);
         mAddWordBtn.draw();
     }
+    TextBox addWordText("Add a word", {384, 185, 205, 1});
+    addWordText.setBorderThickness(0);
+    addWordText.setColor(BLANK);
+    addWordText.setTextSize(25);
+    addWordText.draw();
+    TextBox addWordSubtext(
+        "Got a word that hasn't been in our dictionary? Add it now!",
+        {387, 221, 412, 1});
+    addWordSubtext.setBorderThickness(0);
+    addWordSubtext.setColor(BLANK);
+    addWordSubtext.setTextSize(17);
+    addWordSubtext.setTextColor(AppColor::TEXT_FADED);
+    addWordSubtext.draw();
+
     if (mIsOpenReset) {
         DrawRectangleRoundedLines(
             {367, mResetBtn.getRect().y, 591, 139}, 20.0 * 2 / 139,
@@ -112,6 +133,22 @@ void SettingsState::draw() {
                                   1, AppColor::TEXT);
         mResetBtn.draw();
     }
+    TextBox resetText("Restore dictionary",
+                      {384, mResetBtn.getRect().y + 4, 205, 1});
+    resetText.setBorderThickness(0);
+    resetText.setColor(BLANK);
+    resetText.setTextSize(25);
+    resetText.draw();
+    TextBox resetSubtext(
+        "Restore the current dictionary back to its original data.",
+        {387, mResetBtn.getRect().y + 40, 412, 1});
+    resetSubtext.setBorderThickness(0);
+    resetSubtext.setColor(BLANK);
+    resetSubtext.setTextSize(17);
+    resetSubtext.setTextColor(AppColor::TEXT_FADED);
+    resetSubtext.draw();
+
     mInfoPage.draw();
     mNavBar.draw();
+    DrawLineEx({341, 163}, {982, 163}, 1, AppColor::TEXT);
 }
