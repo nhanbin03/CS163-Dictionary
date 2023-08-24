@@ -36,7 +36,7 @@ private:
     Button mCancelButton;
     Button mSaveButton;
 
-    int mPositionY{0};
+    float mPositionY{0};
 
     bool mEditMode{false};
     std::vector<InputBox::Ptr> mDefEdittors;

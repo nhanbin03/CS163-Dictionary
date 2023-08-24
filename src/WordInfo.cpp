@@ -185,7 +185,7 @@ void WordInfo::updateEditMode(float dt) {
 }
 
 void WordInfo::drawInfoMode() {
-    int startingPosY = 279 + mPositionY;
+    float startingPosY = 279 + mPositionY;
     int cnt = 0;
     for (auto defPtr : mWord->defs) {
         if (defPtr->isDeleted())

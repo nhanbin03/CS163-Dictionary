@@ -6,7 +6,7 @@ DefinitionGameState::DefinitionGameState(StateStack& stack, Context context)
 
     mQuiz = Dictionary::getInstance().getDict().getDefinitionQuiz();
     for (int i = 0; i < 4; i++) {
-        mChoices[i] = Button((Rectangle){331, 224 + 85 * i, 661, 75});
+        mChoices[i] = Button((Rectangle){331, (float)224 + 85 * i, 661, 75});
         mChoices[i].setColor(AppColor::BACKGROUND_1);
         mChoices[i].setBorderThickness(2);
         mChoices[i].setBorderColor(AppColor::TEXT);

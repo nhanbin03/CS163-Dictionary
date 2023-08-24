@@ -55,7 +55,7 @@ void WordList::draw() {
         buttonPtr->draw();
     }
     for (int i = 0; i < mList.size(); i++) {
-        int startingPosY = mRect.y + mPositionY + i * mRowHeight;
+        float startingPosY = mRect.y + mPositionY + i * mRowHeight;
         TextBox wordText(mList[i]->orgStr, {mRect.x + 35, startingPosY + 7,
                                             mRect.width, mRowHeight});
         wordText.setBorderColor(BLANK);

@@ -33,7 +33,7 @@ private:
 
     bool mIsHistory{false};
 
-    int mPositionY{0};
+    float mPositionY{0};
 
     WordInfo mInfoPage;
 };

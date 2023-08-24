@@ -88,7 +88,7 @@ void NavBar::addNav(NavID id, std::function<void()> navigate) {
     Button navButton;
     const int BUTTON_HEIGHT = 56;
     navButton.setPosition(
-        (Vector2){0, 112 + BUTTON_HEIGHT * mNavButtons.size()});
+        (Vector2){0, 112 + (float)BUTTON_HEIGHT * mNavButtons.size()});
     navButton.setSize({getSize().x, BUTTON_HEIGHT});
     navButton.setCornerRoundness(0);
 
