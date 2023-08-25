@@ -100,6 +100,11 @@ std::string InputBox::getInputText() const {
     return mInputText;
 }
 
+void InputBox::setInputText(const std::string& text) {
+    mInputText = text;
+    mIndexPos = text.size();
+}
+
 float InputBox::getHeight() {
     return mRect.height;
 }

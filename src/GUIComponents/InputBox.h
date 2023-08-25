@@ -39,6 +39,7 @@ public:
     void setPlaceHolder(const std::string &text);
 
     std::string getInputText() const;
+    void setInputText(const std::string &text);
 
     float getHeight();
 

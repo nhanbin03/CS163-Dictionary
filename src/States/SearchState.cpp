@@ -47,6 +47,15 @@ SearchState::SearchState(StateStack &stack, Context context)
         this->mScrollList.resetPosition();
     });
 
+    // Delete text button
+    mDeleteTextButton.setRect({808, 103, 33, 33});
+    mDeleteTextButton.setTexture(
+        TextureHolder::getInstance().get(TextureID::Remove));
+    mDeleteTextButton.setColor(BLANK);
+    mDeleteTextButton.setCallback([this]() {
+        this->mSearchBar.setInputText("");
+    });
+
     // Scroll list
     mScrollList.setRect({341, 163, 641, 477});
 
@@ -92,6 +101,7 @@ bool SearchState::update(float dt) {
     }
 
     mSearchButton.update(dt);
+    mDeleteTextButton.update(dt);
     mModeButton.update(dt);
     mNavBar.update(dt);
 
@@ -112,6 +122,7 @@ void SearchState::draw() {
     }
 
     mSearchButton.draw();
+    mDeleteTextButton.draw();
     mModeButton.draw();
     mNavBar.draw();
     DrawLineEx({341, 163}, {982, 163}, 1, AppColor::TEXT);

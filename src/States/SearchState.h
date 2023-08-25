@@ -26,6 +26,7 @@ private:
 private: // UI elements
     InputBox mSearchBar;
     Button mSearchButton;
+    Button mDeleteTextButton;
     WordList mScrollList;
 
     Button mModeButton;

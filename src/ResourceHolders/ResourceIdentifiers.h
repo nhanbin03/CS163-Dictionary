@@ -21,7 +21,8 @@ enum class TextureID {
     Delete,
     Details,
     WordGame,
-    DefinitionGame
+    DefinitionGame,
+    Remove
 };
 
 enum class FontID {

@@ -98,6 +98,8 @@ void Application::loadTextures() {
                                       BASE_PATH + "WordGame.png");
     TextureHolder::getInstance().load(TextureID::DefinitionGame,
                                       BASE_PATH + "DefinitionGame.png");
+    TextureHolder::getInstance().load(TextureID::Remove,
+                                      BASE_PATH + "Remove.png");
 }
 
 void Application::loadFonts() {
