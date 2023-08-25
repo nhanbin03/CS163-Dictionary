@@ -1,6 +1,7 @@
 #include "TextBox.h"
 
 #include <iostream>
+#include <sstream>
 
 TextBox::TextBox(std::string defaultText, Rectangle bounds) {
     mRect = bounds;
