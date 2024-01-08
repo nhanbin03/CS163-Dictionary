@@ -1,5 +1,7 @@
 # CS163 - Dictionary
 
+![](asset/texture/Screenshot1.png)
+
 ## Description
 This project implements a dictionary using a Trie data structure in C++. The dictionary supports multiple languages including Eng-Eng, Eng-Vie, Vie-Eng, slang, and even emojis. It utilizes the raylib library for its graphical interface.
 
